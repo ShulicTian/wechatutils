@@ -1,0 +1,196 @@
+package wechat.qiye.ctrl;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import wechat.common.constant.BaseConstant;
+import wechat.common.entity.BaseCtrlAbs;
+import wechat.common.entity.BaseReceiveEntity;
+import wechat.common.interfaces.BaseCtrl;
+import wechat.common.utils.GsonUtils;
+import wechat.common.utils.HttpsRequestUtils;
+import wechat.qiye.entity.BaseParamsEntity;
+import wechat.qiye.entity.PersonnelEntity;
+import wechat.qiye.gson.PersonnelTypeAdapter;
+import wechat.qiye.utils.AccessTokenUtils;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 成员控制器
+ *
+ * @author tianslc
+ */
+public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEntity> {
+
+    public PersonnelCtrl(BaseParamsEntity baseParamsEntity) {
+        super(baseParamsEntity);
+    }
+
+    /**
+     * 创建人员
+     *
+     * @param personnelEntity
+     */
+    public boolean create(PersonnelEntity personnelEntity) {
+        String url = BaseConstant.QIYE_CU_PERSONNEL.replace("METHOD", BaseConstant.CREATE).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtils.httpsPost(url, personnelEtityToJsonStringByAdapter(personnelEntity).getBytes());
+        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
+        Integer errorCode = baseReceiveEntity.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return create(personnelEntity);
+        }
+        return isSuccess(errorCode, "创建人员");
+    }
+
+    /**
+     * 更新人员
+     *
+     * @param personnelEntity
+     */
+    public boolean update(PersonnelEntity personnelEntity) {
+        String url = BaseConstant.QIYE_CU_PERSONNEL.replace("METHOD", BaseConstant.UPDATE).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtils.httpsPost(url, personnelEtityToJsonStringByAdapter(personnelEntity).getBytes());
+        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
+        Integer errorCode = baseReceiveEntity.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return update(personnelEntity);
+        }
+        return isSuccess(errorCode, "更新人员");
+    }
+
+    /**
+     * 获取人员
+     *
+     * @param personnelId
+     */
+    public PersonnelEntity get(String personnelId) {
+        String url = BaseConstant.QIYE_RD_PERSONNEL.
+                replace("METHOD", BaseConstant.GET).
+                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("USERID", personnelId);
+        String result = HttpsRequestUtils.httpsGet(url);
+        PersonnelEntity nowPersonnel = gson.fromJson(result, PersonnelEntity.class);
+        Integer errorCode = nowPersonnel.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return get(personnelId);
+        }
+        if (isSuccess(errorCode, "获取人员")) {
+            return nowPersonnel;
+        }
+        return null;
+    }
+
+    /**
+     * 删除人员
+     *
+     * @param personnelId
+     */
+    public boolean delete(String personnelId) {
+        String url = BaseConstant.QIYE_RD_PERSONNEL.
+                replace("METHOD", BaseConstant.DELETE).
+                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("USERID", personnelId);
+        String result = HttpsRequestUtils.httpsGet(url);
+        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, PersonnelEntity.class);
+        Integer errorCode = baseReceiveEntity.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return delete(personnelId);
+        }
+        return isSuccess(errorCode, "删除人员");
+    }
+
+    /**
+     * 批量删除人员
+     *
+     * @param personnelIds
+     */
+    public boolean batchDelete(String[] personnelIds) {
+        String url = BaseConstant.QIYE_RD_PERSONNEL.
+                replace("METHOD", BaseConstant.BATCHDELETE).
+                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("useridlist", GsonUtils.parseJsonArray(gson.toJson(personnelIds)));
+        String result = HttpsRequestUtils.httpsPost(url, jsonObject.toString().getBytes());
+        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, PersonnelEntity.class);
+        Integer errorCode = baseReceiveEntity.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return batchDelete(personnelIds);
+        }
+        return isSuccess(errorCode, "批量删除人员");
+    }
+
+    /**
+     * PersonnelEntity对象按特定适配器转换成json字符串
+     *
+     * @param personnelEntity
+     * @return
+     */
+    private String personnelEtityToJsonStringByAdapter(PersonnelEntity personnelEntity) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(PersonnelEntity.class, new PersonnelTypeAdapter()).create();
+        return gson.toJson(personnelEntity);
+    }
+
+    /**
+     * 获取部门下人员
+     *
+     * @param departmentId
+     * @param fetchChild   1递归 0不递归
+     * @return
+     */
+    public List<PersonnelEntity> getDepartmentPersonnelList(String departmentId, String fetchChild) {
+        String url = BaseConstant.QIYE_DEPARTMENT_PERSONNEL.
+                replace("METHOD", BaseConstant.SIMPLELIST).
+                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("DEPARTMENT_ID", departmentId).
+                replace("FETCH_CHILD", fetchChild);
+        String result = HttpsRequestUtils.httpsGet(url);
+        JsonObject jsonObject = GsonUtils.parseJsonObject(result);
+        JsonArray userlist = jsonObject.getAsJsonArray("userlist");
+        List<PersonnelEntity> personnelList = Arrays.asList(gson.fromJson(userlist, PersonnelEntity[].class));
+        Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return getDepartmentPersonnelList(departmentId, fetchChild);
+        }
+        if (isSuccess(errorCode, "获取人员列表")) {
+            return personnelList;
+        }
+        return null;
+    }
+
+    /**
+     * 获取部门下人员详情
+     *
+     * @param departmentId
+     * @param fetchChild   1递归 0不递归
+     * @return
+     */
+    public List<PersonnelEntity> getDepartmentPersonneDesclList(String departmentId, String fetchChild) {
+        String url = BaseConstant.QIYE_DEPARTMENT_PERSONNEL.
+                replace("METHOD", BaseConstant.LIST).
+                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("DEPARTMENT_ID", departmentId).
+                replace("FETCH_CHILD", fetchChild);
+        String result = HttpsRequestUtils.httpsGet(url);
+        JsonObject jsonObject = GsonUtils.parseJsonObject(result);
+        JsonArray userlist = jsonObject.getAsJsonArray("userlist");
+        List<PersonnelEntity> personnelList = Arrays.asList(gson.fromJson(userlist, PersonnelEntity[].class));
+        Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return getDepartmentPersonnelList(departmentId, fetchChild);
+        }
+        if (isSuccess(errorCode, "获取人员详情列表")) {
+            return personnelList;
+        }
+        return null;
+    }
+}

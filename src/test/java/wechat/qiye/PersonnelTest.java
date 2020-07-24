@@ -15,8 +15,8 @@ public class PersonnelTest {
 
     static {
         BaseParamsEntity baseParamsEntity = new BaseParamsEntity();
-        baseParamsEntity.setCorpId("wx77ed669a36b7bb9a");
-        baseParamsEntity.setAddressBookSecret("Csf6cfnjObdzLZAG4fwS4jsBRLf2r5l9XXKc1te2i0g");
+        baseParamsEntity.setCorpId("");
+        baseParamsEntity.setAddressBookSecret("");
         baseParamsEntity.setOpenGlobalAddressBookSecret(true);
         qiYeWeChatUtils = new QiYeWeChatUtils();
         qiYeWeChatUtils.openPersonnelCtrl(baseParamsEntity);

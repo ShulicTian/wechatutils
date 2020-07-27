@@ -1,4 +1,4 @@
-package wechat.qiye.entity;
+package wechat.common.entity;
 
 public enum ErrorEnum {
     OK(0, "成功"),

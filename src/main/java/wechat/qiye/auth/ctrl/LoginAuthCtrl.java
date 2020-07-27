@@ -1,12 +1,12 @@
-package wechat.qiye.ctrl;
+package wechat.qiye.auth.ctrl;
 
 import com.google.gson.JsonObject;
-import wechat.common.constant.BaseConstant;
+import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.BaseCtrlAbs;
+import wechat.common.entity.BaseParamsEntity;
+import wechat.common.utils.AccessTokenUtils;
 import wechat.common.utils.GsonUtils;
 import wechat.common.utils.HttpsRequestUtils;
-import wechat.qiye.entity.BaseParamsEntity;
-import wechat.qiye.utils.AccessTokenUtils;
 
 /**
  * 登入认证工具类
@@ -27,7 +27,22 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getAuthUrl(String redirectUrl, String state) {
-        String url = BaseConstant.QIYE_OAUTH2.replace("CORPID", baseParamsEntity.getCorpId()).
+        String url = BaseUrlConstant.QIYE_OAUTH2.replace("CORPID", baseParamsEntity.getCorpId()).
+                replace("REDIRECT_URI", redirectUrl).
+                replace("STATE", state);
+        return url;
+    }
+
+    /**
+     * 拼接qrcode OAuth Url
+     *
+     * @param redirectUrl
+     * @param state
+     * @return
+     */
+    public String getQrcodeAuthUrl(String redirectUrl, String state) {
+        String url = BaseUrlConstant.QIYE_QRCODE_OAUTH.replace("CORPID", baseParamsEntity.getCorpId()).
+                replace("AGENTID", baseParamsEntity.getAgentId()).
                 replace("REDIRECT_URI", redirectUrl).
                 replace("STATE", state);
         return url;
@@ -40,7 +55,7 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getUserIdByCode(String code) {
-        String url = BaseConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+        String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
                 replace("CODE", code);
         String result = HttpsRequestUtils.httpsGet(url);
         JsonObject jsonObject = GsonUtils.parseJsonObject(result);
@@ -49,7 +64,11 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
             return getUserIdByCode(code);
         }
         if (isSuccess(errorCode, "获取部门列表")) {
-            return jsonObject.get("userId").toString();
+            String id = jsonObject.get("UserId").toString();
+            if (id == null) {
+                id = jsonObject.get("OpenId").toString();
+            }
+            return id;
         }
         return null;
     }

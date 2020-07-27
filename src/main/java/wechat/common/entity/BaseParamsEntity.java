@@ -1,4 +1,4 @@
-package wechat.qiye.entity;
+package wechat.common.entity;
 
 /**
  * 基础参数实体

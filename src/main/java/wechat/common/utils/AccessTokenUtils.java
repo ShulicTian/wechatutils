@@ -1,13 +1,12 @@
-package wechat.qiye.utils;
+package wechat.common.utils;
 
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wechat.common.aes.AesException;
-import wechat.common.constant.BaseConstant;
-import wechat.common.utils.HttpsRequestUtils;
-import wechat.qiye.entity.AccessTokenEntity;
-import wechat.qiye.entity.BaseParamsEntity;
+import wechat.common.constant.BaseUrlConstant;
+import wechat.common.entity.AccessTokenEntity;
+import wechat.common.entity.BaseParamsEntity;
 
 /**
  * AccessToken工具类
@@ -67,7 +66,7 @@ public class AccessTokenUtils {
      * @return
      */
     public static String requestAccessToken(BaseParamsEntity baseParamsEntity) {
-        String url = BaseConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", baseParamsEntity.getCorpId()).replace("SECRET", baseParamsEntity.getSecret());
+        String url = BaseUrlConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", baseParamsEntity.getCorpId()).replace("SECRET", baseParamsEntity.getSecret());
         String result = HttpsRequestUtils.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {

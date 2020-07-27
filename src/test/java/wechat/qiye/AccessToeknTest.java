@@ -1,8 +1,8 @@
 package wechat.qiye;
 
 import org.junit.Test;
-import wechat.qiye.entity.BaseParamsEntity;
-import wechat.qiye.utils.AccessTokenUtils;
+import wechat.common.entity.BaseParamsEntity;
+import wechat.common.utils.AccessTokenUtils;
 
 public class AccessToeknTest {
 

@@ -1,4 +1,4 @@
-package wechat.qiye.gson;
+package wechat.qiye.addressbook.adapter;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.qiye.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.PersonnelEntity;
 
 import java.io.IOException;
 

@@ -2,9 +2,9 @@ package wechat.qiye;
 
 import com.google.gson.Gson;
 import org.junit.Test;
+import wechat.common.entity.BaseParamsEntity;
 import wechat.common.utils.QiYeWeChatUtils;
-import wechat.qiye.entity.BaseParamsEntity;
-import wechat.qiye.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.PersonnelEntity;
 
 import java.util.List;
 

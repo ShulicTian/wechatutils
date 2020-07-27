@@ -1,16 +1,17 @@
-package wechat.qiye.ctrl;
+package wechat.qiye.addressbook.ctrl;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import wechat.common.constant.BaseConstant;
+import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.BaseCtrlAbs;
+import wechat.common.entity.BaseParamsEntity;
 import wechat.common.entity.BaseReceiveEntity;
+import wechat.common.entity.QiYeUriEnum;
 import wechat.common.interfaces.BaseCtrl;
+import wechat.common.utils.AccessTokenUtils;
 import wechat.common.utils.GsonUtils;
 import wechat.common.utils.HttpsRequestUtils;
-import wechat.qiye.entity.BaseParamsEntity;
-import wechat.qiye.entity.DepartmentEntity;
-import wechat.qiye.utils.AccessTokenUtils;
+import wechat.qiye.addressbook.entity.DepartmentEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean create(DepartmentEntity departmentEntity) {
-        String url = BaseConstant.QIYE_CU_DEPARTMENT.replace("METHOD", BaseConstant.CREATE).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
         String result = HttpsRequestUtils.httpsPost(url, gson.toJson(departmentEntity).getBytes());
         BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
         Integer errorCode = baseReceiveEntity.getErrcode();
@@ -49,7 +50,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean update(DepartmentEntity departmentEntity) {
-        String url = BaseConstant.QIYE_CU_DEPARTMENT.replace("METHOD", BaseConstant.UPDATE).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
         String result = HttpsRequestUtils.httpsPost(url, gson.toJson(departmentEntity).getBytes());
         BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
         Integer errorCode = baseReceiveEntity.getErrcode();
@@ -66,8 +67,8 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentId
      */
     public boolean delete(String departmentId) {
-        String url = BaseConstant.QIYE_RD_DEPARTMENT.
-                replace("METHOD", BaseConstant.DELETE).
+        String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
+                replace("METHOD", QiYeUriEnum.DELETE.getUri()).
                 replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
                 replace("ID", departmentId);
         String result = HttpsRequestUtils.httpsGet(url);
@@ -103,8 +104,8 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentId
      */
     public List<DepartmentEntity> getList(String departmentId) {
-        String url = BaseConstant.QIYE_RD_DEPARTMENT.
-                replace("METHOD", BaseConstant.LIST).
+        String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
+                replace("METHOD", QiYeUriEnum.LIST.getUri()).
                 replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
                 replace("ID", departmentId);
         String result = HttpsRequestUtils.httpsGet(url);

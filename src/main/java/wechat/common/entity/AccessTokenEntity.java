@@ -1,7 +1,6 @@
-package wechat.qiye.entity;
+package wechat.common.entity;
 
 import com.google.gson.annotations.SerializedName;
-import wechat.common.entity.BaseReceiveEntity;
 
 import java.io.Serializable;
 

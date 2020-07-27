@@ -1,4 +1,4 @@
-package wechat.qiye.entity;
+package wechat.qiye.addressbook.entity;
 
 import com.google.gson.JsonArray;
 

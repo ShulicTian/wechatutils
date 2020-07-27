@@ -2,12 +2,14 @@ package wechat.common.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.qiye.ctrl.DepartmentCtrl;
-import wechat.qiye.ctrl.LoginAuthCtrl;
-import wechat.qiye.ctrl.PersonnelCtrl;
-import wechat.qiye.entity.BaseParamsEntity;
-import wechat.qiye.entity.DepartmentEntity;
-import wechat.qiye.entity.PersonnelEntity;
+import wechat.common.entity.BaseParamsEntity;
+import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
+import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
+import wechat.qiye.addressbook.entity.DepartmentEntity;
+import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.auth.ctrl.LoginAuthCtrl;
+import wechat.qiye.message.ctrl.MessageCtrl;
+import wechat.qiye.message.entity.BaseMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +27,7 @@ public class QiYeWeChatUtils {
     private PersonnelCtrl personnelCtrl;
     private DepartmentCtrl departmentCtrl;
     private LoginAuthCtrl loginAuthCtrl;
+    private MessageCtrl messageCtrl;
     private Map<String, Object> ctrlCache = new HashMap<String, Object>();
     private Logger logger = LogManager.getLogger(QiYeWeChatUtils.class);
 
@@ -110,7 +113,7 @@ public class QiYeWeChatUtils {
     }
 
     /**
-     * 开启部门控制器
+     * 开启身份验证控制器
      *
      * @return
      */
@@ -131,6 +134,30 @@ public class QiYeWeChatUtils {
      */
     public void openLoginAuthCtrlByPath(String path) {
         this.openLoginAuthCtrl(this.loadProps(path));
+    }
+
+    /**
+     * 开启消息控制器
+     *
+     * @return
+     */
+    public void openMessageCtrl(BaseParamsEntity baseParamsEntity) {
+        String key = baseParamsEntity.getAgentId();
+        if (!ctrlCache.containsKey(key)) {
+            this.messageCtrl = new MessageCtrl(baseParamsEntity);
+            this.ctrlCache.put(key + "_messageCtrl", this.messageCtrl);
+        } else {
+            this.messageCtrl = (MessageCtrl) ctrlCache.get(key);
+        }
+    }
+
+    /**
+     * 开启消息控制器（配置文件方式）
+     *
+     * @return
+     */
+    public void openMessageCtrlByPath(String path) {
+        this.openMessageCtrl(this.loadProps(path));
     }
 
     /**
@@ -310,6 +337,16 @@ public class QiYeWeChatUtils {
         }
 
         return false;
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param baseMessage
+     * @return
+     */
+    public boolean sendMessage(BaseMessage<?> baseMessage) {
+        return messageCtrl.send(baseMessage);
     }
 
 }

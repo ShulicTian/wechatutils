@@ -5,7 +5,7 @@ package wechat.qiye.message.entity;
  *
  * @author tianslc
  */
-public class TextMessage {
+public class TextMessage extends Message {
     private String content;
 
     public String getContent() {

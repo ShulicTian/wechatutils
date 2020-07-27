@@ -9,7 +9,8 @@ import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.message.ctrl.MessageCtrl;
-import wechat.qiye.message.entity.BaseMessage;
+import wechat.qiye.message.entity.Message;
+import wechat.qiye.message.entity.MessageEntity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -342,11 +343,11 @@ public class QiYeWeChatUtils {
     /**
      * 发送消息
      *
-     * @param baseMessage
+     * @param messageEntity
      * @return
      */
-    public boolean sendMessage(BaseMessage<?> baseMessage) {
-        return messageCtrl.send(baseMessage);
+    public boolean sendMessage(MessageEntity<? extends Message> messageEntity) {
+        return messageCtrl.send(messageEntity);
     }
 
 }

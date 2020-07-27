@@ -5,7 +5,8 @@ import wechat.common.entity.BaseCtrlAbs;
 import wechat.common.entity.BaseParamsEntity;
 import wechat.common.utils.AccessTokenUtils;
 import wechat.common.utils.HttpsRequestUtils;
-import wechat.qiye.message.entity.BaseMessage;
+import wechat.qiye.message.entity.Message;
+import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.SendReceiveEntity;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
 
@@ -23,17 +24,17 @@ public class MessageCtrl extends BaseCtrlAbs {
     /**
      * 发送消息
      *
-     * @param baseMessage
+     * @param messageEntity
      */
-    public boolean send(BaseMessage<?> baseMessage) {
+    public boolean send(MessageEntity<? extends Message> messageEntity) {
         String url = BaseUrlConstant.QIYE_SEND_MESSAGE.
                 replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(baseMessage).getBytes());
+        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(messageEntity).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
-            return send(baseMessage);
+            return send(messageEntity);
         }
         return isSuccess(errorCode, "发送消息");
     }

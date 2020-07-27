@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class VoiceMessage {
+public class VoiceMessage extends Message {
 
     @SerializedName("media_id")
     private String mediaId;

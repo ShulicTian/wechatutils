@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class BaseMessage<T> {
+public class BaseMessage {
 
     /**
      * 发送的userId 多个以|分隔
@@ -38,11 +38,6 @@ public class BaseMessage<T> {
      */
     @SerializedName("msgtype")
     private String msgType;
-
-    /**
-     * 消息实体
-     */
-    private T message;
 
     /**
      * 是否保密消息 0否 1是
@@ -97,14 +92,6 @@ public class BaseMessage<T> {
 
     public void setMsgType(String msgType) {
         this.msgType = msgType;
-    }
-
-    public T getMessage() {
-        return message;
-    }
-
-    public void setMessage(T message) {
-        this.message = message;
     }
 
     public String getAgentId() {

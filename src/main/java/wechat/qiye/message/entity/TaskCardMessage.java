@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class TaskCardMessage {
+public class TaskCardMessage extends Message {
 
     /**
      * 标题

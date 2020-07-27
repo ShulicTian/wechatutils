@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author tianslc
  */
-public class NewsMessage {
+public class NewsMessage extends Message {
     private List<NewsArticle> articles;
 
     public List<NewsArticle> getArticles() {

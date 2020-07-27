@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class MiniprogramNoticeMessage {
+public class MiniprogramNoticeMessage extends Message {
 
     private String appid;
     private String page;

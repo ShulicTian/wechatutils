@@ -5,7 +5,7 @@ package wechat.qiye.message.entity;
  *
  * @author tianslc
  */
-public class TextCardMessage {
+public class TextCardMessage extends Message {
 
     /**
      * 标题

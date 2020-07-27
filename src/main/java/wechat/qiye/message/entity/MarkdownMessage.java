@@ -5,7 +5,7 @@ package wechat.qiye.message.entity;
  *
  * @author tianslc
  */
-public class MarkdownMessage {
+public class MarkdownMessage extends Message {
     private String content;
 
     public String getContent() {

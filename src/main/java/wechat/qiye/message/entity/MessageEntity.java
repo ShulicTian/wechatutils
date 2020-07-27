@@ -15,5 +15,10 @@ public class MessageEntity<T> extends BaseMessage {
 
     public void setMessage(T message) {
         this.message = message;
+        this.setMsgType(this.getMessageType());
+    }
+
+    public String getMessageType() {
+        return message.getClass().getSimpleName().replace("Message", "").toLowerCase();
     }
 }

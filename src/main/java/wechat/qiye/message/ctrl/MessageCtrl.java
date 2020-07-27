@@ -1,10 +1,13 @@
 package wechat.qiye.message.ctrl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.BaseCtrlAbs;
 import wechat.common.entity.BaseParamsEntity;
 import wechat.common.utils.AccessTokenUtils;
 import wechat.common.utils.HttpsRequestUtils;
+import wechat.qiye.message.adapter.MessageTypeAdapter;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.SendReceiveEntity;
@@ -29,7 +32,7 @@ public class MessageCtrl extends BaseCtrlAbs {
     public boolean send(MessageEntity<? extends Message> messageEntity) {
         String url = BaseUrlConstant.QIYE_SEND_MESSAGE.
                 replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(messageEntity).getBytes());
+        String result = HttpsRequestUtils.httpsPost(url, messageEntityToJsonStringByAdapter(messageEntity).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -55,6 +58,17 @@ public class MessageCtrl extends BaseCtrlAbs {
             return updateMessageStatus(taskCardMessageStatus);
         }
         return isSuccess(errorCode, "更新消息状态");
+    }
+
+    /**
+     * MessageEntity对象按特定适配器转换成json字符串
+     *
+     * @param messageEntity
+     * @return
+     */
+    private String messageEntityToJsonStringByAdapter(MessageEntity<? extends Message> messageEntity) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(MessageEntity.class, new MessageTypeAdapter()).create();
+        return gson.toJson(messageEntity);
     }
 
 }

@@ -16,12 +16,12 @@ import java.io.IOException;
  *
  * @author tianslc
  */
-public class MessageTypeAdapter<T> extends TypeAdapter<BaseMessage<T>> {
+public class MessageTypeAdapter<T> extends TypeAdapter<MessageEntity<T>> {
 
     private Logger logger = LogManager.getLogger(MessageTypeAdapter.class);
 
     @Override
-    public void write(JsonWriter out, BaseMessage<T> value) throws IOException {
+    public void write(JsonWriter out, MessageEntity<T> value) throws IOException {
         out.beginObject();
 
         Gson gson = new Gson();
@@ -137,7 +137,7 @@ public class MessageTypeAdapter<T> extends TypeAdapter<BaseMessage<T>> {
     }
 
     @Override
-    public BaseMessage<T> read(JsonReader in) throws IOException {
+    public MessageEntity<T> read(JsonReader in) throws IOException {
         return null;
     }
 }

@@ -24,28 +24,28 @@ public class PersonnelTest {
 
     @Test
     public void getPersonInfo() {
-        PersonnelEntity personnelEntitys = qiYeWeChatUtils.getPersonnel("18814470102");
+        PersonnelEntity personnelEntitys = qiYeWeChatUtils.getPersonnel("");
         System.out.println(gson.toJson(personnelEntitys));
     }
 
     @Test
     public void deletePersonInfo() {
-        boolean success = qiYeWeChatUtils.deletePersonnel("15361830419");
+        boolean success = qiYeWeChatUtils.deletePersonnel("");
         System.out.println(gson.toJson(success));
     }
 
     @Test
     public void batchDeletePerson() {
-        boolean success = qiYeWeChatUtils.batchDeletePersonnel(new String[]{"15361830419"});
+        boolean success = qiYeWeChatUtils.batchDeletePersonnel(new String[]{""});
         System.out.println(gson.toJson(success));
     }
 
     @Test
     public void createPersonInfo() {
         PersonnelEntity personnelEntity = new PersonnelEntity();
-        personnelEntity.setUserId("15361830419");
+        personnelEntity.setUserId("");
         personnelEntity.setName("田舒利聪钓鱼小号");
-        personnelEntity.setMobile("15361830419");
+        personnelEntity.setMobile("");
         personnelEntity.setDepartment(new String[]{"0102"});
         personnelEntity.setOrder(new Integer[]{0});
         boolean success = qiYeWeChatUtils.createPersonnel(personnelEntity);
@@ -55,9 +55,9 @@ public class PersonnelTest {
     @Test
     public void updatePersonInfo() {
         PersonnelEntity personnelEntity = new PersonnelEntity();
-        personnelEntity.setUserId("15361830419");
+        personnelEntity.setUserId("");
         personnelEntity.setName("田舒利聪钓鱼小号a");
-        personnelEntity.setMobile("15361830419");
+        personnelEntity.setMobile("");
         personnelEntity.setDepartment(new String[]{"0102","0103"});
         personnelEntity.setOrder(new Integer[]{0});
         boolean success = qiYeWeChatUtils.updatePersonnel(personnelEntity);

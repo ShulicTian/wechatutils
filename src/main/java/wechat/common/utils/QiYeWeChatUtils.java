@@ -37,19 +37,14 @@ public class QiYeWeChatUtils {
      * 加载配置文件方式
      */
     private synchronized BaseParamsEntity loadProps(String path) {
-        BaseParamsEntity baseParamsEntity = new BaseParamsEntity();
+        BaseParamsEntity baseParamsEntity = null;
         Properties props = new Properties();
         InputStream in = null;
         try {
             in = new FileInputStream(new File(path));
             props.load(in);
             if (null != props) {
-                baseParamsEntity.setCorpId(props.getProperty("corpId"));
-                baseParamsEntity.setSecret(props.getProperty("secret"));
-                baseParamsEntity.setAgentId(props.getProperty("agentId"));
-                baseParamsEntity.setEncodingAESKey(props.getProperty("encodingAESKey"));
-                baseParamsEntity.setAddressBookSecret(props.getProperty("addressBookSecret"));
-                baseParamsEntity.setOpenGlobalAddressBookSecret(Boolean.parseBoolean(props.getProperty("isOpenGlobalAddressBookSecret")));
+                baseParamsEntity = new BaseParamsEntity(props);
             }
         } catch (Exception e) {
             e.printStackTrace();

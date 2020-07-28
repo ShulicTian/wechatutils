@@ -14,7 +14,7 @@ public class DepartmentTest {
     private static Gson gson = new Gson();
 
     static {
-        BaseParamsEntity baseParamsEntity = new BaseParamsEntity("wx77ed669a36b7bb9a", "Csf6cfnjObdzLZAG4fwS4jsBRLf2r5l9XXKc1te2i0g", true);
+        BaseParamsEntity baseParamsEntity = new BaseParamsEntity("", "", true);
         qiYeWeChatUtil = new QiYeWeChatUtil();
         qiYeWeChatUtil.openDepartmentCtrl(baseParamsEntity);
         qiYeWeChatUtil.openPersonnelCtrl(baseParamsEntity);

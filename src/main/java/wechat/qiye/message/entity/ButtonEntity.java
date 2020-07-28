@@ -17,6 +17,20 @@ public class ButtonEntity {
     @SerializedName("is_bold")
     private String isBold;
 
+    public ButtonEntity(String key, String name, String replaceName) {
+        this.key = key;
+        this.name = name;
+        this.replaceName = replaceName;
+    }
+
+    public ButtonEntity(String key, String name, String replaceName, String color, String isBold) {
+        this.key = key;
+        this.name = name;
+        this.replaceName = replaceName;
+        this.color = color;
+        this.isBold = isBold;
+    }
+
     public String getKey() {
         return key;
     }

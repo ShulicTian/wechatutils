@@ -11,6 +11,7 @@ import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.message.ctrl.MessageCtrl;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
+import wechat.qiye.message.entity.TaskCardMessageStatus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -348,6 +349,16 @@ public class QiYeWeChatUtils {
      */
     public boolean sendMessage(MessageEntity<? extends Message> messageEntity) {
         return messageCtrl.send(messageEntity);
+    }
+
+    /**
+     * 更新任务卡片消息的状态
+     *
+     * @param taskCardMessageStatus
+     * @return
+     */
+    public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
+        return messageCtrl.updateMessageStatus(taskCardMessageStatus);
     }
 
 }

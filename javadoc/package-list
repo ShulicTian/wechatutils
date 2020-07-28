@@ -1,0 +1,13 @@
+wechat.common.aes
+wechat.common.constant
+wechat.common.entity
+wechat.common.interfaces
+wechat.common.utils
+wechat.qiye
+wechat.qiye.addressbook.adapter
+wechat.qiye.addressbook.ctrl
+wechat.qiye.addressbook.entity
+wechat.qiye.auth.ctrl
+wechat.qiye.message.adapter
+wechat.qiye.message.ctrl
+wechat.qiye.message.entity

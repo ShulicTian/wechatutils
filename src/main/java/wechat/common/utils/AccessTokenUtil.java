@@ -14,9 +14,9 @@ import wechat.common.entity.BaseParamsEntity;
  *
  * @author tianslc
  */
-public class AccessTokenUtils {
+public class AccessTokenUtil {
 
-    private static Logger logger = LogManager.getLogger(AccessTokenUtils.class);
+    private static Logger logger = LogManager.getLogger(AccessTokenUtil.class);
     private static JedisPool jedisPool;
     private static boolean openRedisCache = false;
 
@@ -29,7 +29,7 @@ public class AccessTokenUtils {
     public static String getAccessToken(BaseParamsEntity baseParamsEntity) {
         if (baseParamsEntity.isOpenRedisCache()) {
             try {
-                jedisPool = JedisUtils.getJedisPool(baseParamsEntity.getRedisConfig());
+                jedisPool = JedisUtil.getJedisPool(baseParamsEntity.getRedisConfig());
                 openRedisCache = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -84,7 +84,7 @@ public class AccessTokenUtils {
      */
     public static String requestAccessToken(BaseParamsEntity baseParamsEntity) {
         String url = BaseUrlConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", baseParamsEntity.getCorpId()).replace("SECRET", baseParamsEntity.getSecret());
-        String result = HttpsRequestUtils.httpsGet(url);
+        String result = HttpsRequestUtil.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.info("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
@@ -103,9 +103,9 @@ public class AccessTokenUtils {
      */
     private static void cacheAccessToken(String tokenKey, AccessTokenEntity accessTokenEntity) {
         if (openRedisCache) {
-            RedisUtils.putString(tokenKey, accessTokenEntity.getAccessToken(), jedisPool);
+            RedisUtil.putString(tokenKey, accessTokenEntity.getAccessToken(), jedisPool);
         } else {
-            CacheUtils.put(CacheUtils.ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
         }
         logger.info("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -119,9 +119,9 @@ public class AccessTokenUtils {
     private static String getCacheAccessToken(String tokenKey) {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtils.getString(tokenKey, jedisPool);
+            accessToken = RedisUtil.getString(tokenKey, jedisPool);
         } else {
-            accessToken = (String) CacheUtils.get(CacheUtils.ACCESS_TOKEN_CACHE, tokenKey);
+            accessToken = (String) CacheUtil.get(CacheUtil.ACCESS_TOKEN_CACHE, tokenKey);
         }
         if (accessToken != null) {
             logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", "");

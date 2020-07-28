@@ -5,8 +5,8 @@ import com.google.gson.GsonBuilder;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.BaseCtrlAbs;
 import wechat.common.entity.BaseParamsEntity;
-import wechat.common.utils.AccessTokenUtils;
-import wechat.common.utils.HttpsRequestUtils;
+import wechat.common.utils.AccessTokenUtil;
+import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.message.adapter.MessageTypeAdapter;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
@@ -31,8 +31,8 @@ public class MessageCtrl extends BaseCtrlAbs {
      */
     public boolean send(MessageEntity<? extends Message> messageEntity) {
         String url = BaseUrlConstant.QIYE_SEND_MESSAGE.
-                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, messageEntityToJsonStringByAdapter(messageEntity).getBytes());
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtil.httpsPost(url, messageEntityToJsonStringByAdapter(messageEntity).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -49,8 +49,8 @@ public class MessageCtrl extends BaseCtrlAbs {
      */
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
         String url = BaseUrlConstant.QIYE_UPDATE_MESSAGE.
-                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(taskCardMessageStatus).getBytes());
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(taskCardMessageStatus).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次

@@ -3,15 +3,15 @@ package wechat.qiye;
 import com.google.gson.Gson;
 import org.junit.Test;
 import wechat.common.entity.BaseParamsEntity;
-import wechat.common.utils.QiYeWeChatUtils;
 import wechat.qiye.message.entity.ButtonEntity;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.TaskCardMessage;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
+import wechat.qiye.utils.QiYeWeChatUtil;
 
 public class MessageTest {
 
-    private static QiYeWeChatUtils qiYeWeChatUtils;
+    private static QiYeWeChatUtil qiYeWeChatUtil;
     private static BaseParamsEntity baseParamsEntity;
     private static Gson gson = new Gson();
 
@@ -38,7 +38,7 @@ public class MessageTest {
         messageEntity.setToUser("|");
         messageEntity.setAgentId(baseParamsEntity.getAgentId());
         messageEntity.setMessage(taskCardMessage);
-        qiYeWeChatUtils.sendMessage(messageEntity);
+        qiYeWeChatUtil.sendMessage(messageEntity);
 
     }
 
@@ -49,6 +49,6 @@ public class MessageTest {
         taskCardMessageStatus.setTaskId("001");
         taskCardMessageStatus.setUserids(new String[]{""});
         taskCardMessageStatus.setClickedKey("yes1");
-        qiYeWeChatUtils.updateMessageStatus(taskCardMessageStatus);
+        qiYeWeChatUtil.updateMessageStatus(taskCardMessageStatus);
     }
 }

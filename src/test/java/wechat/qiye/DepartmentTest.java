@@ -3,47 +3,44 @@ package wechat.qiye;
 import com.google.gson.Gson;
 import org.junit.Test;
 import wechat.common.entity.BaseParamsEntity;
-import wechat.common.utils.QiYeWeChatUtils;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
+import wechat.qiye.utils.QiYeWeChatUtil;
 
 import java.util.List;
 
 public class DepartmentTest {
 
-    private static QiYeWeChatUtils qiYeWeChatUtils;
+    private static QiYeWeChatUtil qiYeWeChatUtil;
     private static Gson gson = new Gson();
 
     static {
-        BaseParamsEntity baseParamsEntity = new BaseParamsEntity();
-        baseParamsEntity.setCorpId("");
-        baseParamsEntity.setAddressBookSecret("");
-        baseParamsEntity.setOpenGlobalAddressBookSecret(true);
-        qiYeWeChatUtils = new QiYeWeChatUtils();
-        qiYeWeChatUtils.openDepartmentCtrl(baseParamsEntity);
-        qiYeWeChatUtils.openPersonnelCtrl(baseParamsEntity);
+        BaseParamsEntity baseParamsEntity = new BaseParamsEntity("wx77ed669a36b7bb9a", "Csf6cfnjObdzLZAG4fwS4jsBRLf2r5l9XXKc1te2i0g", true);
+        qiYeWeChatUtil = new QiYeWeChatUtil();
+        qiYeWeChatUtil.openDepartmentCtrl(baseParamsEntity);
+        qiYeWeChatUtil.openPersonnelCtrl(baseParamsEntity);
     }
 
     @Test
     public void getDepartment() {
-        DepartmentEntity departmentEntitys = qiYeWeChatUtils.getDepartment("84");
+        DepartmentEntity departmentEntitys = qiYeWeChatUtil.getDepartment("84");
         System.out.println(gson.toJson(departmentEntitys));
     }
 
     @Test
     public void getDepartmentList() {
-        List<DepartmentEntity> departmentEntitys = qiYeWeChatUtils.getDepartmentList("84");
+        List<DepartmentEntity> departmentEntitys = qiYeWeChatUtil.getDepartmentList("84");
         System.out.println(gson.toJson(departmentEntitys));
     }
 
     @Test
     public void deleteDepartment() {
-        boolean success = qiYeWeChatUtils.deleteDepartment("0102");
+        boolean success = qiYeWeChatUtil.deleteDepartment("0102");
         System.out.println(gson.toJson(success));
     }
 
     @Test
     public void forceDeleteDepartment() {
-        boolean success = qiYeWeChatUtils.forceDeleteDepartment("0102");
+        boolean success = qiYeWeChatUtil.forceDeleteDepartment("0102");
         System.out.println(gson.toJson(success));
     }
 
@@ -54,7 +51,7 @@ public class DepartmentTest {
         departmentEntity.setName("钓鱼");
         departmentEntity.setNameEn("diaoyu");
         departmentEntity.setParentId("0102");
-        boolean success = qiYeWeChatUtils.createDepartment(departmentEntity);
+        boolean success = qiYeWeChatUtil.createDepartment(departmentEntity);
         System.out.println(success);
     }
 
@@ -65,7 +62,7 @@ public class DepartmentTest {
         departmentEntity.setName("钓鱼2");
         departmentEntity.setNameEn("diaoyu2");
         departmentEntity.setParentId("1");
-        boolean success = qiYeWeChatUtils.updateDepartment(departmentEntity);
+        boolean success = qiYeWeChatUtil.updateDepartment(departmentEntity);
         System.out.println(success);
     }
 

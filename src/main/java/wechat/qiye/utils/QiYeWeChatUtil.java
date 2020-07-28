@@ -1,4 +1,4 @@
-package wechat.common.utils;
+package wechat.qiye.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,14 +24,14 @@ import java.util.*;
  *
  * @author tinaslc
  */
-public class QiYeWeChatUtils {
+public class QiYeWeChatUtil {
 
     private PersonnelCtrl personnelCtrl;
     private DepartmentCtrl departmentCtrl;
     private LoginAuthCtrl loginAuthCtrl;
     private MessageCtrl messageCtrl;
     private Map<String, Object> ctrlCache = new HashMap<String, Object>();
-    private Logger logger = LogManager.getLogger(QiYeWeChatUtils.class);
+    private Logger logger = LogManager.getLogger(QiYeWeChatUtil.class);
 
     /**
      * 加载配置文件方式

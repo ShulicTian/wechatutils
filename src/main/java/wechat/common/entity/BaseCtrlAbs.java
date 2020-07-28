@@ -3,7 +3,7 @@ package wechat.common.entity;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.common.utils.AccessTokenUtils;
+import wechat.common.utils.AccessTokenUtil;
 
 /**
  * 基础控制器继承类
@@ -50,7 +50,7 @@ public abstract class BaseCtrlAbs {
         // 只会重新请求一次，若还是不合法则不重复请求
         if (!isReGetToken && ErrorEnum.ACCESSTOKEN_ILLEGAL.getCode().equals(code)) {
             isReGetToken = true;
-            AccessTokenUtils.requestAccessToken(baseParamsEntity);
+            AccessTokenUtil.requestAccessToken(baseParamsEntity);
             logger.info("【QiYeWeChat】{}", "重新请求AccessToken");
             return true;
         }

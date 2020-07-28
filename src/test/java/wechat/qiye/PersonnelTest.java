@@ -3,23 +3,20 @@ package wechat.qiye;
 import com.google.gson.Gson;
 import org.junit.Test;
 import wechat.common.entity.BaseParamsEntity;
-import wechat.common.utils.QiYeWeChatUtils;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.utils.QiYeWeChatUtil;
 
 import java.util.List;
 
 public class PersonnelTest {
 
-    private static QiYeWeChatUtils qiYeWeChatUtils;
+    private static QiYeWeChatUtil qiYeWeChatUtil;
     private static Gson gson = new Gson();
 
     static {
-        BaseParamsEntity baseParamsEntity = new BaseParamsEntity();
-        baseParamsEntity.setCorpId("");
-        baseParamsEntity.setAddressBookSecret("");
-        baseParamsEntity.setOpenGlobalAddressBookSecret(true);
-        qiYeWeChatUtils = new QiYeWeChatUtils();
-        qiYeWeChatUtils.openPersonnelCtrl(baseParamsEntity);
+        BaseParamsEntity baseParamsEntity = new BaseParamsEntity("wx77ed669a36b7bb9a", "Csf6cfnjObdzLZAG4fwS4jsBRLf2r5l9XXKc1te2i0g", true);
+        qiYeWeChatUtil = new QiYeWeChatUtil();
+        qiYeWeChatUtil.openPersonnelCtrl(baseParamsEntity);
     }
 
     @Test
@@ -48,7 +45,7 @@ public class PersonnelTest {
         personnelEntity.setMobile("");
         personnelEntity.setDepartment(new String[]{"0102"});
         personnelEntity.setOrder(new Integer[]{0});
-        boolean success = qiYeWeChatUtils.createPersonnel(personnelEntity);
+        boolean success = qiYeWeChatUtil.createPersonnel(personnelEntity);
         System.out.println(success);
     }
 
@@ -60,13 +57,13 @@ public class PersonnelTest {
         personnelEntity.setMobile("");
         personnelEntity.setDepartment(new String[]{"0102","0103"});
         personnelEntity.setOrder(new Integer[]{0});
-        boolean success = qiYeWeChatUtils.updatePersonnel(personnelEntity);
+        boolean success = qiYeWeChatUtil.updatePersonnel(personnelEntity);
         System.out.println(success);
     }
 
     @Test
     public void getPersonList() {
-        List<PersonnelEntity> PersonnelList = qiYeWeChatUtils.getPersonnelList("0102", "0");
+        List<PersonnelEntity> PersonnelList = qiYeWeChatUtil.getPersonnelList("0102", "0");
         System.out.println(gson.toJson(PersonnelList));
     }
 

@@ -8,9 +8,9 @@ import wechat.common.entity.BaseParamsEntity;
 import wechat.common.entity.BaseReceiveEntity;
 import wechat.common.entity.QiYeUriEnum;
 import wechat.common.interfaces.BaseCtrl;
-import wechat.common.utils.AccessTokenUtils;
-import wechat.common.utils.GsonUtils;
-import wechat.common.utils.HttpsRequestUtils;
+import wechat.common.utils.AccessTokenUtil;
+import wechat.common.utils.GsonUtil;
+import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 
 import java.util.Arrays;
@@ -33,8 +33,8 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean create(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(departmentEntity).getBytes());
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
         BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
         Integer errorCode = baseReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -50,8 +50,8 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean update(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity));
-        String result = HttpsRequestUtils.httpsPost(url, gson.toJson(departmentEntity).getBytes());
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
         BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
         Integer errorCode = baseReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -69,9 +69,9 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public boolean delete(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.DELETE.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
                 replace("ID", departmentId);
-        String result = HttpsRequestUtils.httpsGet(url);
+        String result = HttpsRequestUtil.httpsGet(url);
         BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, DepartmentEntity.class);
         Integer errorCode = baseReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -106,10 +106,10 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public List<DepartmentEntity> getList(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
                 replace("ID", departmentId);
-        String result = HttpsRequestUtils.httpsGet(url);
-        JsonObject jsonObject = GsonUtils.parseJsonObject(result);
+        String result = HttpsRequestUtil.httpsGet(url);
+        JsonObject jsonObject = GsonUtil.parseJsonObject(result);
         JsonArray departments = jsonObject.getAsJsonArray("department");
         List<DepartmentEntity> list = Arrays.asList(gson.fromJson(departments, DepartmentEntity[].class));
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");

@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPool;
  *
  * @author tianslc
  */
-public class RedisUtils {
+public class RedisUtil {
 
     public static void putString(String key, String value, JedisPool jedisPool) {
         Jedis jedis = jedisPool.getResource();

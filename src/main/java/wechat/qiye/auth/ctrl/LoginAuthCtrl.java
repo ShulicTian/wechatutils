@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.BaseCtrlAbs;
 import wechat.common.entity.BaseParamsEntity;
-import wechat.common.utils.AccessTokenUtils;
-import wechat.common.utils.GsonUtils;
-import wechat.common.utils.HttpsRequestUtils;
+import wechat.common.utils.AccessTokenUtil;
+import wechat.common.utils.GsonUtil;
+import wechat.common.utils.HttpsRequestUtil;
 
 /**
  * 登入认证工具类
@@ -55,10 +55,10 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getUserIdByCode(String code) {
-        String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtils.getAccessToken(baseParamsEntity)).
+        String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
                 replace("CODE", code);
-        String result = HttpsRequestUtils.httpsGet(url);
-        JsonObject jsonObject = GsonUtils.parseJsonObject(result);
+        String result = HttpsRequestUtil.httpsGet(url);
+        JsonObject jsonObject = GsonUtil.parseJsonObject(result);
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         if (isTokenLose(errorCode)) {
             return getUserIdByCode(code);

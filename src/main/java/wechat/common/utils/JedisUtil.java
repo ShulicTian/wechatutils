@@ -9,7 +9,7 @@ import wechat.common.entity.RedisConfig;
  *
  * @author tianslc
  */
-public class JedisUtils {
+public class JedisUtil {
 
     /**
      * 获取JedisPool

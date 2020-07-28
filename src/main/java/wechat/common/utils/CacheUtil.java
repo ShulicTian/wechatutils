@@ -10,7 +10,7 @@ import wechat.common.cache.CommonCacheManager;
  *
  * @author tianslc
  */
-public class CacheUtils {
+public class CacheUtil {
     public static final String ACCESS_TOKEN_CACHE = "accessTokenCache";
     public static CacheManager cacheManager = (CacheManager) CommonCacheManager.getEhCacheManager();
 

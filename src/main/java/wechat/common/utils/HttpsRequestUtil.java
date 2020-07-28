@@ -19,7 +19,7 @@ import java.security.cert.X509Certificate;
  *
  * @author tianslc
  */
-public class HttpsRequestUtils {
+public class HttpsRequestUtil {
 
     public static final String REQUEST_POST = "POST";
     public static final String REQUEST_GET = "GET";

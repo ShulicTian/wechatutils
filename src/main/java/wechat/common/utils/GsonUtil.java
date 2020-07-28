@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class GsonUtils {
+public class GsonUtil {
     private static JsonParser jsonParser = new JsonParser();
 
     public static JsonObject parseJsonObject(String jsonString) {

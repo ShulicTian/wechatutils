@@ -26,7 +26,7 @@ public class CommonCacheManager {
     public static Object getEhCacheManager() {
         synchronized (managers) {
             if (!managers.containsKey(CacheManagerEnum.EHCACHE_MANAGER.getKey())) {
-                CacheManager cacheManager = CacheManager.create(System.getProperty("user.dir") + "\\src\\resources\\ehcache.xml");
+                CacheManager cacheManager = CacheManager.create(System.getProperty("user.dir") + "\\src\\main\\resources\\ehcache.xml");
                 managers.put(CacheManagerEnum.EHCACHE_MANAGER.getKey(), cacheManager);
             }
         }

@@ -1,4 +1,5 @@
 wechat.common.aes
+wechat.common.cache
 wechat.common.constant
 wechat.common.entity
 wechat.common.interfaces
@@ -11,3 +12,4 @@ wechat.qiye.auth.ctrl
 wechat.qiye.message.adapter
 wechat.qiye.message.ctrl
 wechat.qiye.message.entity
+wechat.qiye.utils

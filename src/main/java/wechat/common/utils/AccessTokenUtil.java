@@ -124,7 +124,7 @@ public class AccessTokenUtil {
             accessToken = (String) CacheUtil.get(CacheUtil.ACCESS_TOKEN_CACHE, tokenKey);
         }
         if (accessToken != null) {
-            logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", "");
+            logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", accessToken);
             return accessToken;
         }
         logger.error("【QiYeWeChat】{}", "缓存未找到AccessToken");

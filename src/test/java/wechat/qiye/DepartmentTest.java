@@ -47,10 +47,10 @@ public class DepartmentTest {
     @Test
     public void createDepartment() {
         DepartmentEntity departmentEntity = new DepartmentEntity();
-        departmentEntity.setId("0103");
+        departmentEntity.setId("0102");
         departmentEntity.setName("钓鱼");
         departmentEntity.setNameEn("diaoyu");
-        departmentEntity.setParentId("0102");
+        departmentEntity.setParentId("1");
         boolean success = qiYeWeChatUtil.createDepartment(departmentEntity);
         System.out.println(success);
     }

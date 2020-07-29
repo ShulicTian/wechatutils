@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 企业微信控制器
@@ -307,32 +308,32 @@ public class QiYeWeChatUtil {
      */
     public boolean forceDeleteDepartment(String departmentId) {
         List<DepartmentEntity> departmentEntities = getDepartmentList(departmentId);
-        List<String> departments;
-        List<String> ids = null;
-        List<PersonnelEntity> personnelEntities = null;
-        String id = "";
-        int ind = 0;
-        for (int i = departmentEntities.size() - 1; i >= 0; i--) {
-            id = departmentEntities.get(i).getId();
-            personnelEntities = getPersonnelDescList(id, "0");
-            ids = new ArrayList<String>();
-            for (PersonnelEntity personnelEntity : personnelEntities) {
-                departments = new ArrayList<String>(Arrays.asList(personnelEntity.getDepartment()));
-                if (departments.size() > 1) {
-                    ind = departments.indexOf(id);
-                    departments.remove(ind);
-                    personnelEntity.getOrder()[ind] = null;
-                    personnelEntity.getIsLaderInDept()[ind] = null;
-                    personnelEntity.setDepartment(departments.toArray(new String[departments.size()]));
-                    updatePersonnel(personnelEntity);
-                } else {
-                    ids.add(personnelEntity.getUserId());
+        if (departmentEntities != null && departmentEntities.size() > 0) {
+            departmentEntities.forEach(department -> {
+                List<PersonnelEntity> personnelEntities = getPersonnelDescList(department.getId(), "0");
+                if (personnelEntities != null && personnelEntities.size() > 0) {
+                    List<String> userIds = new ArrayList<>();
+                    personnelEntities.stream().forEach(personnel -> {
+                        if (personnel.getDepartment().length == 1) {
+                            userIds.add(personnel.getUserId());
+                        } else {
+                            List<String> departmentIds = Arrays.stream(personnel.getDepartment()).collect(Collectors.toList());
+                            int index = departmentIds.indexOf(department.getId());
+                            departmentIds.remove(index);
+                            personnel.getOrder()[index] = null;
+                            personnel.getIsLaderInDept()[index] = null;
+                            personnel.setDepartment(departmentIds.toArray(new String[departmentIds.size()]));
+                            updatePersonnel(personnel);
+                        }
+                    });
+                    if (userIds.size() > 0) {
+                        batchDeletePersonnel(userIds.toArray(new String[userIds.size()]));
+                    }
                 }
-            }
-            batchDeletePersonnel(ids.toArray(new String[ids.size()]));
-            deleteDepartment(departmentEntities.get(i).getId());
+                deleteDepartment(department.getId());
+            });
+            return true;
         }
-
         return false;
     }
 

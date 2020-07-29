@@ -152,7 +152,7 @@ public class BaseParamsEntity {
         this.redisConfig = redisConfig;
     }
 
-    public void initRedisConfig(Properties properties) {
+    private void initRedisConfig(Properties properties) {
         redisConfig = new RedisConfig();
         if (StringUtils.isNotEmpty(properties.getProperty("redis.address"))) {
             redisConfig.setAddress(properties.getProperty("redis.address"));

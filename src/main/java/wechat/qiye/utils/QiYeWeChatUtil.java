@@ -81,15 +81,6 @@ public class QiYeWeChatUtil {
     }
 
     /**
-     * 开启成员控制器（配置文件方式）
-     *
-     * @return
-     */
-    public void openPersonnelCtrlByPath(String path) {
-        this.openPersonnelCtrl(this.loadProps(path));
-    }
-
-    /**
      * 开启部门控制器
      *
      * @return
@@ -102,15 +93,6 @@ public class QiYeWeChatUtil {
         } else {
             this.departmentCtrl = (DepartmentCtrl) ctrlCache.get(key);
         }
-    }
-
-    /**
-     * 开启部门控制器（配置文件方式）
-     *
-     * @return
-     */
-    public void openDepartmentCtrlByPath(String path) {
-        this.openDepartmentCtrl(this.loadProps(path));
     }
 
     /**
@@ -129,15 +111,6 @@ public class QiYeWeChatUtil {
     }
 
     /**
-     * 开启身份认证控制器（配置文件方式）
-     *
-     * @return
-     */
-    public void openLoginAuthCtrlByPath(String path) {
-        this.openLoginAuthCtrl(this.loadProps(path));
-    }
-
-    /**
      * 开启消息控制器
      *
      * @return
@@ -150,15 +123,6 @@ public class QiYeWeChatUtil {
         } else {
             this.messageCtrl = (MessageCtrl) ctrlCache.get(key);
         }
-    }
-
-    /**
-     * 开启消息控制器（配置文件方式）
-     *
-     * @return
-     */
-    public void openMessageCtrlByPath(String path) {
-        this.openMessageCtrl(this.loadProps(path));
     }
 
     /**

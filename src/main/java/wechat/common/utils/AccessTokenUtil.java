@@ -1,10 +1,8 @@
 package wechat.common.utils;
 
 import com.google.gson.Gson;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import redis.clients.jedis.JedisPool;
 import wechat.common.aes.AesException;
+import wechat.common.cache.RedisSwitch;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.AccessTokenEntity;
 import wechat.common.entity.BaseParamsEntity;
@@ -14,11 +12,7 @@ import wechat.common.entity.BaseParamsEntity;
  *
  * @author tianslc
  */
-public class AccessTokenUtil {
-
-    private static Logger logger = LogManager.getLogger(AccessTokenUtil.class);
-    private static JedisPool jedisPool;
-    private static boolean openRedisCache = false;
+public class AccessTokenUtil extends RedisSwitch {
 
     /**
      * 获取企业微信AccessToken
@@ -28,13 +22,7 @@ public class AccessTokenUtil {
      */
     public static String getAccessToken(BaseParamsEntity baseParamsEntity) {
         if (baseParamsEntity.isOpenRedisCache()) {
-            try {
-                jedisPool = JedisUtil.getJedisPool(baseParamsEntity.getRedisConfig());
-                openRedisCache = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.error("【QiYeWeChat】{} {}", "Redis开启异常", e);
-            }
+            initJedisPool(baseParamsEntity.getRedisConfig());
         }
         if (baseParamsEntity.isOpenGlobalAddressBookSecret()) {
             return getAddressBookAccessToken(baseParamsEntity);

@@ -1,6 +1,7 @@
 package wechat.common.entity;
 
 import org.apache.commons.lang3.StringUtils;
+import wechat.common.cache.RedisConfig;
 
 import java.util.Properties;
 

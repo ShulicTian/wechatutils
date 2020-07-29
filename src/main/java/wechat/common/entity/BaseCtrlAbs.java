@@ -3,6 +3,7 @@ package wechat.common.entity;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wechat.common.constant.ErrorEnum;
 import wechat.common.utils.AccessTokenUtil;
 
 /**

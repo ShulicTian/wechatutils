@@ -2,7 +2,10 @@ package wechat.qiye.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wechat.common.aes.SHA1;
 import wechat.common.entity.BaseParamsEntity;
+import wechat.common.entity.JsSdkConfigEntity;
+import wechat.common.utils.JsApiTicketUtils;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
@@ -355,6 +358,28 @@ public class QiYeWeChatUtil {
      */
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
         return messageCtrl.updateMessageStatus(taskCardMessageStatus);
+    }
+
+    /**
+     * 获取jssdkconfig
+     *
+     * @param baseParamsEntity
+     * @return
+     */
+    public JsSdkConfigEntity getJsSdkConfig(BaseParamsEntity baseParamsEntity, String url) {
+
+        JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
+        String ticket = JsApiTicketUtils.getJsApiTicket(baseParamsEntity);
+        String nonceStr = UUID.randomUUID().toString();
+        long timestamp = System.currentTimeMillis();
+        String signature = SHA1.getSHA1("jsapi_ticket=" + ticket + "&nonceStr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url);
+
+        jsSdkConfigEntity.setAppId(baseParamsEntity.getCorpId());
+        jsSdkConfigEntity.setTimestamp(timestamp);
+        jsSdkConfigEntity.setNonceStr(nonceStr);
+        jsSdkConfigEntity.setSignature(signature);
+
+        return jsSdkConfigEntity;
     }
 
 }

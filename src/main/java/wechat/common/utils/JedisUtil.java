@@ -2,7 +2,7 @@ package wechat.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.JedisPool;
-import wechat.common.entity.RedisConfig;
+import wechat.common.cache.RedisConfig;
 
 /**
  * jedis工具类

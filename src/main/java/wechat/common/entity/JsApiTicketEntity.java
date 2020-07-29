@@ -3,30 +3,29 @@ package wechat.common.entity;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * AccessToken响应实体
+ * JsApiTicket响应实体
  *
  * @author tianslc
  */
-public class AccessTokenEntity extends BaseReceiveEntity {
+public class JsApiTicketEntity extends BaseReceiveEntity {
 
     /**
-     * AccessToken
+     * ticket
      */
-    @SerializedName("access_token")
-    private String accessToken;
+    private String ticket;
 
     /**
-     * AccessToken有效时间
+     * ticket有效时间
      */
     @SerializedName("expires_in")
     private String expiresIn;
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getTicket() {
+        return ticket;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
 
     public String getExpiresIn() {

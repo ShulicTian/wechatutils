@@ -1,7 +1,7 @@
 package wechat.common.cache;
 
 import net.sf.ehcache.CacheManager;
-import wechat.common.entity.CacheManagerEnum;
+import wechat.common.constant.CacheManagerEnum;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

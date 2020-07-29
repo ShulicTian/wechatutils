@@ -1,4 +1,4 @@
-package wechat.common.entity;
+package wechat.common.constant;
 
 /**
  * 缓存管理器

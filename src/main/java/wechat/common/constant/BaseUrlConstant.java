@@ -72,4 +72,14 @@ public class BaseUrlConstant {
      */
     public static String QIYE_COUNT_MESSAGE = "https://qyapi.weixin.qq.com/cgi-bin/message/get_statistics?access_token=ACCESS_TOKEN";
 
+    /**
+     * 企业微信获取JSAPI_TICKET的URL
+     */
+    public static String QIYE_JSAPI_TICKET = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=ACCESS_TOKEN";
+
+    /**
+     * 企业微信获取应用的JSAPI_TICKET的URL
+     */
+    public static String QIYE_APP_JSAPI_TICKET = "https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token=ACCESS_TOKEN&type=agent_config";
+
 }

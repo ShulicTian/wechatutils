@@ -57,26 +57,25 @@
     2.配置详解
              
         <1> 配置文件方式详解
-        
-        // 注意：key必须保持一致
-        #企业微信配置
-        corpId=xxx
-        secret=xxx
-        agentId=xxx
-        encodingAESKey=xxx
-        addressBookSecret=xxx
-        isOpenGlobalAddressBookSecret=false
-        #Redis配置(具体配置参照JedisPoolConfig配置)
-        isOpenRedisCache=false
-        redis.address=0.0.0.0
-        redis.port=6379
-        redis.auth=123456
-        redis.maxTotal=50
-        redis.maxIdle=50
-        redis.minIdle=50
-        redis.maxWaitMillis=50
-        redis.testOnBorrow=false
-        redis.testOnReturn=false
-        redis.timeBetweenEvictionRunsMillis=1000
-        redis.testWhileIdle=false
-        redis.numTestsPerEvictionRun=1000
+         // 注意：key必须保持一致
+         #企业微信配置
+         corpId=xxx
+         secret=xxx
+         agentId=xxx
+         encodingAESKey=xxx
+         addressBookSecret=xxx
+         isOpenGlobalAddressBookSecret=false
+         #Redis配置(具体配置参照JedisPoolConfig配置)
+         isOpenRedisCache=false
+         redis.address=0.0.0.0
+         redis.port=6379
+         redis.auth=123456
+         redis.maxTotal=50
+         redis.maxIdle=50
+         redis.minIdle=50
+         redis.maxWaitMillis=50
+         redis.testOnBorrow=false
+         redis.testOnReturn=false
+         redis.timeBetweenEvictionRunsMillis=1000
+         redis.testWhileIdle=false
+         redis.numTestsPerEvictionRun=1000

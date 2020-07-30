@@ -6,7 +6,7 @@
 
 // ------------------------------------------------------------------------
 
-package wechat.common.aes;
+package wechat.qiye.common.aes;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

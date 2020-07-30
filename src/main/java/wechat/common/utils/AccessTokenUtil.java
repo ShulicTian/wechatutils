@@ -1,11 +1,11 @@
 package wechat.common.utils;
 
 import com.google.gson.Gson;
-import wechat.common.aes.AesException;
 import wechat.common.cache.RedisSwitch;
 import wechat.common.constant.BaseUrlConstant;
-import wechat.common.entity.AccessTokenEntity;
-import wechat.common.entity.BaseParamsEntity;
+import wechat.qiye.common.aes.AesException;
+import wechat.qiye.common.entity.AccessTokenEntity;
+import wechat.qiye.common.entity.BaseParamsEntity;
 
 /**
  * AccessToken工具类

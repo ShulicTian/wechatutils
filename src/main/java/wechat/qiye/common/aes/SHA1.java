@@ -6,7 +6,7 @@
 
 // ------------------------------------------------------------------------
 
-package wechat.common.aes;
+package wechat.qiye.common.aes;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

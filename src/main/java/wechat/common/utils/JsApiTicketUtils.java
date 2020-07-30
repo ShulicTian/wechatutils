@@ -2,11 +2,11 @@ package wechat.common.utils;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
-import wechat.common.aes.AesException;
 import wechat.common.cache.RedisSwitch;
 import wechat.common.constant.BaseUrlConstant;
-import wechat.common.entity.BaseParamsEntity;
-import wechat.common.entity.JsApiTicketEntity;
+import wechat.qiye.common.aes.AesException;
+import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.JsApiTicketEntity;
 
 /**
  * JsApiTicket工具类

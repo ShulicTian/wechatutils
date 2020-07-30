@@ -1,7 +1,7 @@
 package wechat.qiye.addressbook.entity;
 
 import com.google.gson.annotations.SerializedName;
-import wechat.common.entity.BaseReceiveEntity;
+import wechat.qiye.common.entity.BaseReceiveEntity;
 
 /**
  * 部门实体

@@ -2,7 +2,7 @@ package wechat.qiye;
 
 import com.google.gson.Gson;
 import org.junit.Test;
-import wechat.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.message.entity.ButtonEntity;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.TaskCardMessage;

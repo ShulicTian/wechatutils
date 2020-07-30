@@ -1,4 +1,4 @@
-package wechat.common.entity;
+package wechat.qiye.common.entity;
 
 /**
  * jssdk所需的配置信息

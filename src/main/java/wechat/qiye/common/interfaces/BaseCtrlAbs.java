@@ -1,10 +1,11 @@
-package wechat.common.entity;
+package wechat.qiye.common.interfaces;
 
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.common.constant.ErrorEnum;
 import wechat.common.utils.AccessTokenUtil;
+import wechat.qiye.common.constant.QiYeErrorEnum;
+import wechat.qiye.common.entity.BaseParamsEntity;
 
 /**
  * 基础控制器继承类
@@ -32,7 +33,7 @@ public abstract class BaseCtrlAbs {
      * @return
      */
     public boolean isSuccess(Integer code, String message) {
-        if (ErrorEnum.OK.getCode().equals(code)) {
+        if (QiYeErrorEnum.OK.getCode().equals(code)) {
             isReGetToken = false;
             logger.info("【QiYeWeChat】{}{} ", message, "成功");
             return true;
@@ -49,7 +50,7 @@ public abstract class BaseCtrlAbs {
      */
     public boolean isTokenLose(Integer code) {
         // 只会重新请求一次，若还是不合法则不重复请求
-        if (!isReGetToken && ErrorEnum.ACCESSTOKEN_ILLEGAL.getCode().equals(code)) {
+        if (!isReGetToken && QiYeErrorEnum.ACCESSTOKEN_ILLEGAL.getCode().equals(code)) {
             isReGetToken = true;
             AccessTokenUtil.requestAccessToken(baseParamsEntity);
             logger.info("【QiYeWeChat】{}", "重新请求AccessToken");

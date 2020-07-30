@@ -6,7 +6,7 @@
 
 // ------------------------------------------------------------------------
 
-package wechat.common.aes;
+package wechat.qiye.common.aes;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;

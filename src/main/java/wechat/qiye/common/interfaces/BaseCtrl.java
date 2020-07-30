@@ -1,4 +1,4 @@
-package wechat.common.interfaces;
+package wechat.qiye.common.interfaces;
 
 /**
  * 控制器基础接口

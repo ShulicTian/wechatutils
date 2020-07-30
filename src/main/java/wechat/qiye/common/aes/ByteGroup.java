@@ -1,4 +1,4 @@
-package wechat.common.aes;
+package wechat.qiye.common.aes;
 
 import java.util.ArrayList;
 

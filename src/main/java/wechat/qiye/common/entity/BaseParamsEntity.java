@@ -1,4 +1,4 @@
-package wechat.common.entity;
+package wechat.qiye.common.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import wechat.common.cache.RedisConfig;

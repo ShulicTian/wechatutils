@@ -2,15 +2,15 @@ package wechat.qiye.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.common.aes.SHA1;
-import wechat.common.entity.BaseParamsEntity;
-import wechat.common.entity.JsSdkConfigEntity;
 import wechat.common.utils.JsApiTicketUtils;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.auth.ctrl.LoginAuthCtrl;
+import wechat.qiye.common.aes.SHA1;
+import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.JsSdkConfigEntity;
 import wechat.qiye.message.ctrl.MessageCtrl;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;

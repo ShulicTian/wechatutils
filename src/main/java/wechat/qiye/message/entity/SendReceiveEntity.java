@@ -1,6 +1,6 @@
 package wechat.qiye.message.entity;
 
-import wechat.common.entity.BaseReceiveEntity;
+import wechat.qiye.common.entity.BaseReceiveEntity;
 
 /**
  * 消息发送返回基础字段

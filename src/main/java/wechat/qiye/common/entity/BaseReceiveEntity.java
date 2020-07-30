@@ -1,4 +1,4 @@
-package wechat.common.entity;
+package wechat.qiye.common.entity;
 
 import com.google.gson.annotations.Expose;
 

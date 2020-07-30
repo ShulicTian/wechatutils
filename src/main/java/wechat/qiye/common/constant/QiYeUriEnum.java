@@ -1,4 +1,4 @@
-package wechat.common.constant;
+package wechat.qiye.common.constant;
 
 /**
  * 企业微信URI

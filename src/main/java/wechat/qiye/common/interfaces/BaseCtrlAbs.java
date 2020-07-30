@@ -3,9 +3,9 @@ package wechat.qiye.common.interfaces;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import wechat.common.utils.AccessTokenUtil;
 import wechat.qiye.common.constant.QiYeErrorEnum;
 import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.utils.AccessTokenUtil;
 
 /**
  * 基础控制器继承类

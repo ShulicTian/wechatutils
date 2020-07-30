@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import wechat.common.constant.BaseUrlConstant;
-import wechat.common.utils.AccessTokenUtil;
 import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.adapter.PersonnelTypeAdapter;
@@ -15,6 +14,7 @@ import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.common.entity.BaseReceiveEntity;
 import wechat.qiye.common.interfaces.BaseCtrl;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
+import wechat.qiye.utils.AccessTokenUtil;
 
 import java.util.Arrays;
 import java.util.List;

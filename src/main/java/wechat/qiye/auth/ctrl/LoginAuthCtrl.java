@@ -2,11 +2,11 @@ package wechat.qiye.auth.ctrl;
 
 import com.google.gson.JsonObject;
 import wechat.common.constant.BaseUrlConstant;
-import wechat.common.utils.AccessTokenUtil;
 import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
+import wechat.qiye.utils.AccessTokenUtil;
 
 /**
  * 登入认证工具类

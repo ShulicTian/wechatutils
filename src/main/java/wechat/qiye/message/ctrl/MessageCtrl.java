@@ -3,7 +3,6 @@ package wechat.qiye.message.ctrl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wechat.common.constant.BaseUrlConstant;
-import wechat.common.utils.AccessTokenUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
@@ -12,6 +11,7 @@ import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.SendReceiveEntity;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
+import wechat.qiye.utils.AccessTokenUtil;
 
 /**
  * 消息控制器

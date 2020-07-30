@@ -29,8 +29,8 @@ public class MessageTest {
         TaskCardMessage taskCardMessage = new TaskCardMessage();
         taskCardMessage.setTitle("任务卡片Test");
         taskCardMessage.setDescription("2020年07月28日测试任务卡片消息");
-        taskCardMessage.setUrl("https//:www.baidu.com");
-        taskCardMessage.setTaskId("A2000");
+        taskCardMessage.setUrl("https://www.baidu.com");
+        taskCardMessage.setTaskId("A2001");
         ButtonEntity confirm = new ButtonEntity("yes1", "确定", "已确定");
         ButtonEntity cancel = new ButtonEntity("no1", "取消", "已取消");
         taskCardMessage.setBtn(new ButtonEntity[]{confirm, cancel});

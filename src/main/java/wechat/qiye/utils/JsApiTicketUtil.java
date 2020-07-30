@@ -16,7 +16,7 @@ import wechat.qiye.common.entity.JsApiTicketEntity;
  *
  * @author tianslc
  */
-public class JsApiTicketUtils extends RedisSwitch {
+public class JsApiTicketUtil extends RedisSwitch {
 
     /**
      * 获取企业微信 jsapi_ticket

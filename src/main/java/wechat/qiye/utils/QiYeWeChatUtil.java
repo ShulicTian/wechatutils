@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 企业微信控制器
+ * 企业微信操作工具
  *
  * @author tinaslc
  */
@@ -332,7 +332,7 @@ public class QiYeWeChatUtil {
     public JsSdkConfigEntity getJsSdkConfig(BaseParamsEntity baseParamsEntity, String url) {
 
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
-        String ticket = JsApiTicketUtils.getJsApiTicket(baseParamsEntity);
+        String ticket = JsApiTicketUtil.getJsApiTicket(baseParamsEntity);
         String nonceStr = UUID.randomUUID().toString();
         long timestamp = System.currentTimeMillis();
         String signature = SHA1.getSHA1("jsapi_ticket=" + ticket + "&nonceStr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url);

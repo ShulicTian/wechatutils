@@ -7,8 +7,8 @@ import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.common.constant.QiYeUriEnum;
-import wechat.qiye.common.entity.BaseParamsEntity;
-import wechat.qiye.common.entity.BaseReceiveEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
+import wechat.qiye.common.entity.QiYeReceiveEntity;
 import wechat.qiye.common.interfaces.BaseCtrl;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.utils.AccessTokenUtil;
@@ -23,8 +23,8 @@ import java.util.List;
  */
 public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEntity> {
 
-    public DepartmentCtrl(BaseParamsEntity baseParamsEntity) {
-        super(baseParamsEntity);
+    public DepartmentCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        super(qiYeParamsEntity);
     }
 
     /**
@@ -33,10 +33,10 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean create(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
-        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
-        Integer errorCode = baseReceiveEntity.getErrcode();
+        QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
+        Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
             return create(departmentEntity);
@@ -50,10 +50,10 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean update(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
-        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, BaseReceiveEntity.class);
-        Integer errorCode = baseReceiveEntity.getErrcode();
+        QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
+        Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
             return update(departmentEntity);
@@ -69,11 +69,11 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public boolean delete(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.DELETE.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
                 replace("ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
-        BaseReceiveEntity baseReceiveEntity = gson.fromJson(result, DepartmentEntity.class);
-        Integer errorCode = baseReceiveEntity.getErrcode();
+        QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, DepartmentEntity.class);
+        Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
             return delete(departmentId);
@@ -106,7 +106,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public List<DepartmentEntity> getList(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
                 replace("ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);

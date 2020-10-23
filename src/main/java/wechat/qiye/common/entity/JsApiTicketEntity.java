@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class JsApiTicketEntity extends BaseReceiveEntity {
+public class JsApiTicketEntity extends QiYeReceiveEntity {
 
     /**
      * ticket

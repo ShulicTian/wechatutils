@@ -8,7 +8,7 @@ import wechat.common.utils.HttpsRequestUtil;
 import wechat.common.utils.RedisUtil;
 import wechat.qiye.common.aes.AesException;
 import wechat.qiye.common.entity.AccessTokenEntity;
-import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
 
 /**
  * AccessToken工具类
@@ -20,36 +20,36 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 获取企业微信AccessToken
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    public static String getAccessToken(BaseParamsEntity baseParamsEntity) {
-        if (baseParamsEntity.isOpenRedisCache()) {
-            initJedisPool(baseParamsEntity.getRedisConfig());
+    public static String getAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+        if (qiYeParamsEntity.isOpenRedisCache()) {
+            initJedisPool(qiYeParamsEntity.getRedisConfig());
         }
-        if (baseParamsEntity.isOpenGlobalAddressBookSecret()) {
-            return getAddressBookAccessToken(baseParamsEntity);
+        if (qiYeParamsEntity.isOpenGlobalAddressBookSecret()) {
+            return getAddressBookAccessToken(qiYeParamsEntity);
         }
-        return getCorpAccessToken(baseParamsEntity);
+        return getCorpAccessToken(qiYeParamsEntity);
     }
 
     /**
      * 获取企业AccessToken
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    private static String getCorpAccessToken(BaseParamsEntity baseParamsEntity) {
+    private static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken(baseParamsEntity.getAgentId());
+            accessToken = getCacheAccessToken(qiYeParamsEntity.getAgentId());
         } catch (Exception e) {
             logger.error("【QiYeWeChat】{} {}", "缓存获取异常", e);
             e.printStackTrace();
         }
         //如果缓存没拿到就重新请求
         if (accessToken == null || "".equals(accessToken)) {
-            accessToken = requestAccessToken(baseParamsEntity);
+            accessToken = requestAccessToken(qiYeParamsEntity);
         }
         logger.info("【QiYeWeChat】{} [{}]", "获取企业微信AccessToken", accessToken);
         return accessToken;
@@ -58,28 +58,28 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 获取通讯录的AccessToken
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    private static String getAddressBookAccessToken(BaseParamsEntity baseParamsEntity) {
-        baseParamsEntity.setSecret(baseParamsEntity.getAddressBookSecret());
-        baseParamsEntity.setAgentId("AddressBook");
-        return getCorpAccessToken(baseParamsEntity);
+    private static String getAddressBookAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+        qiYeParamsEntity.setSecret(qiYeParamsEntity.getAddressBookSecret());
+        qiYeParamsEntity.setAgentId("AddressBook");
+        return getCorpAccessToken(qiYeParamsEntity);
     }
 
     /**
      * 请求AccessToken
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    public static String requestAccessToken(BaseParamsEntity baseParamsEntity) {
-        String url = BaseUrlConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", baseParamsEntity.getCorpId()).replace("SECRET", baseParamsEntity.getSecret());
+    public static String requestAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+        String url = BaseUrlConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", qiYeParamsEntity.getCorpId()).replace("SECRET", qiYeParamsEntity.getSecret());
         String result = HttpsRequestUtil.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.info("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(baseParamsEntity.getAgentId(), accessTokenEntity);
+            cacheAccessToken(qiYeParamsEntity.getAgentId(), accessTokenEntity);
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -96,7 +96,7 @@ public class AccessTokenUtil extends RedisSwitch {
         if (openRedisCache) {
             RedisUtil.putString(tokenKey, accessTokenEntity.getAccessToken(), jedisPool);
         } else {
-            CacheUtil.put(CacheUtil.ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.QIYE_ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
         }
         logger.info("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -112,7 +112,7 @@ public class AccessTokenUtil extends RedisSwitch {
         if (openRedisCache) {
             accessToken = RedisUtil.getString(tokenKey, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.ACCESS_TOKEN_CACHE, tokenKey);
+            accessToken = (String) CacheUtil.get(CacheUtil.QIYE_ACCESS_TOKEN_CACHE, tokenKey);
         }
         if (accessToken != null) {
             logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", accessToken);

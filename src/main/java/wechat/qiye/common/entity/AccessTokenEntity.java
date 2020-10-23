@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author tianslc
  */
-public class AccessTokenEntity extends BaseReceiveEntity {
+public class AccessTokenEntity extends QiYeReceiveEntity {
 
     /**
      * AccessToken

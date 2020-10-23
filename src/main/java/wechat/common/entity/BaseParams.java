@@ -1,4 +1,4 @@
-package wechat.qiye.common.entity;
+package wechat.common.entity;
 
 import org.apache.commons.lang3.StringUtils;
 import wechat.common.cache.RedisConfig;
@@ -6,125 +6,16 @@ import wechat.common.cache.RedisConfig;
 import java.util.Properties;
 
 /**
- * 基础参数实体
+ * 基础参数表
  *
  * @author tianslc
  */
-public class BaseParamsEntity {
+public class BaseParams {
 
-    /**
-     * 企业ID
-     */
-    private String corpId;
 
-    /**
-     * 应用密钥
-     */
-    private String secret;
-
-    /**
-     * 应用ID
-     */
-    private String agentId;
-
-    /**
-     * 消息密钥
-     */
-    private String encodingAESKey;
-
-    /**
-     * 通讯录密钥
-     */
-    private String addressBookSecret;
-
-    /**
-     * 是否开启全局通讯录操作
-     */
-    private boolean isOpenGlobalAddressBookSecret = false;
-
-    private boolean isOpenRedisCache = false;
+    protected boolean isOpenRedisCache = false;
 
     private RedisConfig redisConfig;
-
-    public BaseParamsEntity(Properties properties) {
-        this.corpId = properties.getProperty("corpId");
-        this.secret = properties.getProperty("secret");
-        this.agentId = properties.getProperty("agentId");
-        this.encodingAESKey = properties.getProperty("encodingAESKey");
-        this.addressBookSecret = properties.getProperty("addressBookSecret");
-        this.isOpenGlobalAddressBookSecret = Boolean.parseBoolean(properties.getProperty("isOpenGlobalAddressBookSecret"));
-        this.isOpenRedisCache = Boolean.parseBoolean(properties.getProperty("isOpenRedisCache"));
-        if (this.isOpenRedisCache) {
-            initRedisConfig(properties);
-        }
-    }
-
-    public BaseParamsEntity(String corpId, String secret, String agentId) {
-        this.corpId = corpId;
-        this.secret = secret;
-        this.agentId = agentId;
-    }
-
-    public BaseParamsEntity(String corpId, String addressBookSecret, boolean isOpenGlobalAddressBookSecret) {
-        this.corpId = corpId;
-        this.addressBookSecret = addressBookSecret;
-        this.isOpenGlobalAddressBookSecret = isOpenGlobalAddressBookSecret;
-    }
-
-    public BaseParamsEntity(String corpId, String secret, String agentId, String encodingAESKey) {
-        this.corpId = corpId;
-        this.secret = secret;
-        this.agentId = agentId;
-        this.encodingAESKey = encodingAESKey;
-    }
-
-    public String getCorpId() {
-        return corpId;
-    }
-
-    public void setCorpId(String corpId) {
-        this.corpId = corpId;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public String getEncodingAESKey() {
-        return encodingAESKey;
-    }
-
-    public void setEncodingAESKey(String encodingAESKey) {
-        this.encodingAESKey = encodingAESKey;
-    }
-
-    public String getAddressBookSecret() {
-        return addressBookSecret;
-    }
-
-    public void setAddressBookSecret(String addressBookSecret) {
-        this.addressBookSecret = addressBookSecret;
-    }
-
-    public String getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
-    }
-
-    public boolean isOpenGlobalAddressBookSecret() {
-        return isOpenGlobalAddressBookSecret;
-    }
-
-    public void setOpenGlobalAddressBookSecret(boolean openGlobalAddressBookSecret) {
-        isOpenGlobalAddressBookSecret = openGlobalAddressBookSecret;
-    }
 
     public boolean isOpenRedisCache() {
         return isOpenRedisCache;
@@ -152,7 +43,7 @@ public class BaseParamsEntity {
         this.redisConfig = redisConfig;
     }
 
-    private void initRedisConfig(Properties properties) {
+    protected void initRedisConfig(Properties properties) {
         redisConfig = new RedisConfig();
         if (StringUtils.isNotEmpty(properties.getProperty("redis.address"))) {
             redisConfig.setAddress(properties.getProperty("redis.address"));

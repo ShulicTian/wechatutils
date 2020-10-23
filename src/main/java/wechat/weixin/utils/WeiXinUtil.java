@@ -6,4 +6,5 @@ package wechat.weixin.utils;
  * @author tianslc
  */
 public class WeiXinUtil {
+
 }

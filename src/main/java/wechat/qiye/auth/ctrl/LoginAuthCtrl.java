@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
-import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.utils.AccessTokenUtil;
 
@@ -15,8 +15,8 @@ import wechat.qiye.utils.AccessTokenUtil;
  */
 public class LoginAuthCtrl extends BaseCtrlAbs {
 
-    public LoginAuthCtrl(BaseParamsEntity baseParamsEntity) {
-        super(baseParamsEntity);
+    public LoginAuthCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        super(qiYeParamsEntity);
     }
 
     /**
@@ -27,7 +27,7 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getAuthUrl(String redirectUrl, String state) {
-        String url = BaseUrlConstant.QIYE_OAUTH2.replace("CORPID", baseParamsEntity.getCorpId()).
+        String url = BaseUrlConstant.QIYE_OAUTH2.replace("CORPID", qiYeParamsEntity.getCorpId()).
                 replace("REDIRECT_URI", redirectUrl).
                 replace("STATE", state);
         return url;
@@ -41,8 +41,8 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getQrcodeAuthUrl(String redirectUrl, String state) {
-        String url = BaseUrlConstant.QIYE_QRCODE_OAUTH.replace("CORPID", baseParamsEntity.getCorpId()).
-                replace("AGENTID", baseParamsEntity.getAgentId()).
+        String url = BaseUrlConstant.QIYE_QRCODE_OAUTH.replace("CORPID", qiYeParamsEntity.getCorpId()).
+                replace("AGENTID", qiYeParamsEntity.getAgentId()).
                 replace("REDIRECT_URI", redirectUrl).
                 replace("STATE", state);
         return url;
@@ -55,7 +55,7 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getUserIdByCode(String code) {
-        String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity)).
+        String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
                 replace("CODE", code);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);

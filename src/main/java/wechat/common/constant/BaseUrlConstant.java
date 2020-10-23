@@ -85,6 +85,6 @@ public class BaseUrlConstant {
     /**
      * 微信获取Token的URL（GET）
      */
-    public static String WX_GET_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+    public static String WX_GET_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=GRANTTYPE&appid=APPID&secret=APPSECRET";
 
 }

@@ -1,14 +1,14 @@
 package wechat.qiye.addressbook.entity;
 
 import com.google.gson.annotations.SerializedName;
-import wechat.qiye.common.entity.BaseReceiveEntity;
+import wechat.qiye.common.entity.QiYeReceiveEntity;
 
 /**
  * 部门实体
  *
  * @author tianslc
  */
-public class DepartmentEntity extends BaseReceiveEntity {
+public class DepartmentEntity extends QiYeReceiveEntity {
     /**
      * 部门ID
      */

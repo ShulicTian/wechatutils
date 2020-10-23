@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.utils.HttpsRequestUtil;
-import wechat.qiye.common.entity.BaseParamsEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.message.adapter.MessageTypeAdapter;
 import wechat.qiye.message.entity.Message;
@@ -20,8 +20,8 @@ import wechat.qiye.utils.AccessTokenUtil;
  */
 public class MessageCtrl extends BaseCtrlAbs {
 
-    public MessageCtrl(BaseParamsEntity baseParamsEntity) {
-        super(baseParamsEntity);
+    public MessageCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        super(qiYeParamsEntity);
     }
 
     /**
@@ -31,7 +31,7 @@ public class MessageCtrl extends BaseCtrlAbs {
      */
     public boolean send(MessageEntity<? extends Message> messageEntity) {
         String url = BaseUrlConstant.QIYE_SEND_MESSAGE.
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsPost(url, messageEntityToJsonStringByAdapter(messageEntity).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
@@ -49,7 +49,7 @@ public class MessageCtrl extends BaseCtrlAbs {
      */
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
         String url = BaseUrlConstant.QIYE_UPDATE_MESSAGE.
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsPost(url, gson.toJson(taskCardMessageStatus).getBytes());
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();

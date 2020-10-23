@@ -8,8 +8,8 @@ import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.common.aes.SHA1;
-import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.common.entity.JsSdkConfigEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
 import wechat.qiye.message.ctrl.MessageCtrl;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
@@ -39,15 +39,15 @@ public class QiYeWeChatUtil {
     /**
      * 加载配置文件方式
      */
-    private synchronized BaseParamsEntity loadProps(String path) {
-        BaseParamsEntity baseParamsEntity = null;
+    private synchronized QiYeParamsEntity loadProps(String path) {
+        QiYeParamsEntity qiYeParamsEntity = null;
         Properties props = new Properties();
         InputStream in = null;
         try {
             in = new FileInputStream(new File(path));
             props.load(in);
             if (null != props) {
-                baseParamsEntity = new BaseParamsEntity(props);
+                qiYeParamsEntity = new QiYeParamsEntity(props);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class QiYeWeChatUtil {
                 e.printStackTrace();
             }
         }
-        return baseParamsEntity;
+        return qiYeParamsEntity;
     }
 
     /**
@@ -69,10 +69,10 @@ public class QiYeWeChatUtil {
      *
      * @return
      */
-    public void openPersonnelCtrl(BaseParamsEntity baseParamsEntity) {
-        String key = baseParamsEntity.getAgentId();
+    public void openPersonnelCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        String key = qiYeParamsEntity.getAgentId();
         if (!ctrlCache.containsKey(key)) {
-            this.personnelCtrl = new PersonnelCtrl(baseParamsEntity);
+            this.personnelCtrl = new PersonnelCtrl(qiYeParamsEntity);
             this.ctrlCache.put(key + "_personnelCtrl", this.personnelCtrl);
         } else {
             this.personnelCtrl = (PersonnelCtrl) ctrlCache.get(key);
@@ -84,10 +84,10 @@ public class QiYeWeChatUtil {
      *
      * @return
      */
-    public void openDepartmentCtrl(BaseParamsEntity baseParamsEntity) {
-        String key = baseParamsEntity.getAgentId();
+    public void openDepartmentCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        String key = qiYeParamsEntity.getAgentId();
         if (!ctrlCache.containsKey(key)) {
-            this.departmentCtrl = new DepartmentCtrl(baseParamsEntity);
+            this.departmentCtrl = new DepartmentCtrl(qiYeParamsEntity);
             this.ctrlCache.put(key + "_departmentCtrl", this.departmentCtrl);
         } else {
             this.departmentCtrl = (DepartmentCtrl) ctrlCache.get(key);
@@ -99,10 +99,10 @@ public class QiYeWeChatUtil {
      *
      * @return
      */
-    public void openLoginAuthCtrl(BaseParamsEntity baseParamsEntity) {
-        String key = baseParamsEntity.getAgentId();
+    public void openLoginAuthCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        String key = qiYeParamsEntity.getAgentId();
         if (!ctrlCache.containsKey(key)) {
-            this.loginAuthCtrl = new LoginAuthCtrl(baseParamsEntity);
+            this.loginAuthCtrl = new LoginAuthCtrl(qiYeParamsEntity);
             this.ctrlCache.put(key + "_loginAuthCtrl", this.loginAuthCtrl);
         } else {
             this.loginAuthCtrl = (LoginAuthCtrl) ctrlCache.get(key);
@@ -114,10 +114,10 @@ public class QiYeWeChatUtil {
      *
      * @return
      */
-    public void openMessageCtrl(BaseParamsEntity baseParamsEntity) {
-        String key = baseParamsEntity.getAgentId();
+    public void openMessageCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        String key = qiYeParamsEntity.getAgentId();
         if (!ctrlCache.containsKey(key)) {
-            this.messageCtrl = new MessageCtrl(baseParamsEntity);
+            this.messageCtrl = new MessageCtrl(qiYeParamsEntity);
             this.ctrlCache.put(key + "_messageCtrl", this.messageCtrl);
         } else {
             this.messageCtrl = (MessageCtrl) ctrlCache.get(key);
@@ -326,18 +326,18 @@ public class QiYeWeChatUtil {
     /**
      * 获取jssdkconfig
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    public JsSdkConfigEntity getJsSdkConfig(BaseParamsEntity baseParamsEntity, String url) {
+    public JsSdkConfigEntity getJsSdkConfig(QiYeParamsEntity qiYeParamsEntity, String url) {
 
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
-        String ticket = JsApiTicketUtil.getJsApiTicket(baseParamsEntity);
+        String ticket = JsApiTicketUtil.getJsApiTicket(qiYeParamsEntity);
         String nonceStr = UUID.randomUUID().toString();
         long timestamp = System.currentTimeMillis();
         String signature = SHA1.getSHA1("jsapi_ticket=" + ticket + "&nonceStr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url);
 
-        jsSdkConfigEntity.setAppId(baseParamsEntity.getCorpId());
+        jsSdkConfigEntity.setAppId(qiYeParamsEntity.getCorpId());
         jsSdkConfigEntity.setTimestamp(timestamp);
         jsSdkConfigEntity.setNonceStr(nonceStr);
         jsSdkConfigEntity.setSignature(signature);

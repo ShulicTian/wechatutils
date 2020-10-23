@@ -8,8 +8,8 @@ import wechat.common.utils.CacheUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.common.utils.RedisUtil;
 import wechat.qiye.common.aes.AesException;
-import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.common.entity.JsApiTicketEntity;
+import wechat.qiye.common.entity.QiYeParamsEntity;
 
 /**
  * JsApiTicket工具类
@@ -21,18 +21,18 @@ public class JsApiTicketUtil extends RedisSwitch {
     /**
      * 获取企业微信 jsapi_ticket
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    public static String getJsApiTicket(BaseParamsEntity baseParamsEntity) {
+    public static String getJsApiTicket(QiYeParamsEntity qiYeParamsEntity) {
 
-        if (baseParamsEntity.isOpenRedisCache()) {
-            initJedisPool(baseParamsEntity.getRedisConfig());
+        if (qiYeParamsEntity.isOpenRedisCache()) {
+            initJedisPool(qiYeParamsEntity.getRedisConfig());
         }
 
-        String jsApiTicket = getCacheJsApiTicket(baseParamsEntity.getAgentId());
+        String jsApiTicket = getCacheJsApiTicket(qiYeParamsEntity.getAgentId());
         if (StringUtils.isEmpty(jsApiTicket)) {
-            jsApiTicket = reuqestJsApiTicket(baseParamsEntity);
+            jsApiTicket = reuqestJsApiTicket(qiYeParamsEntity);
         }
         return jsApiTicket;
     }
@@ -40,16 +40,16 @@ public class JsApiTicketUtil extends RedisSwitch {
     /**
      * 请求企业微信 jsapi_ticket
      *
-     * @param baseParamsEntity
+     * @param qiYeParamsEntity
      * @return
      */
-    public static String reuqestJsApiTicket(BaseParamsEntity baseParamsEntity) {
-        String url = BaseUrlConstant.QIYE_JSAPI_TICKET.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(baseParamsEntity));
+    public static String reuqestJsApiTicket(QiYeParamsEntity qiYeParamsEntity) {
+        String url = BaseUrlConstant.QIYE_JSAPI_TICKET.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsGet(url);
         JsApiTicketEntity jsApiTicketEntity = new Gson().fromJson(result, JsApiTicketEntity.class);
         if (AesException.OK == jsApiTicketEntity.getErrcode()) {
             logger.info("【QiYeWeChat】{} [{}] ", "重新请求JsApiTicket", jsApiTicketEntity.getTicket());
-            cacheJsApiTicket(baseParamsEntity.getAgentId(), jsApiTicketEntity);
+            cacheJsApiTicket(qiYeParamsEntity.getAgentId(), jsApiTicketEntity);
             return jsApiTicketEntity.getTicket();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求JsApiTicket失败", jsApiTicketEntity.getErrcode(), jsApiTicketEntity.getErrmsg());
@@ -66,7 +66,7 @@ public class JsApiTicketUtil extends RedisSwitch {
         if (openRedisCache) {
             RedisUtil.putString(tokenKey, jsApiTicketEntity.getTicket(), jedisPool);
         } else {
-            CacheUtil.put(CacheUtil.ACCESS_JSAPI_TICKET_CACHE, tokenKey, jsApiTicketEntity.getTicket());
+            CacheUtil.put(CacheUtil.QIYE_JSAPI_TICKET_CACHE, tokenKey, jsApiTicketEntity.getTicket());
         }
         logger.info("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入JsApiTicket", jsApiTicketEntity.getTicket(), jsApiTicketEntity.getExpiresIn());
     }
@@ -82,7 +82,7 @@ public class JsApiTicketUtil extends RedisSwitch {
         if (openRedisCache) {
             jsApiTicket = RedisUtil.getString(tokenKey, jedisPool);
         } else {
-            jsApiTicket = (String) CacheUtil.get(CacheUtil.ACCESS_JSAPI_TICKET_CACHE, tokenKey);
+            jsApiTicket = (String) CacheUtil.get(CacheUtil.QIYE_JSAPI_TICKET_CACHE, tokenKey);
         }
         if (jsApiTicket != null) {
             logger.info("【QiYeWeChat】{} [{}]", "缓存获取JsApiTicket", jsApiTicket);

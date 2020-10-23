@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
  *
  * @author tianslc
  */
-public class BaseReceiveEntity {
+public class QiYeReceiveEntity {
 
     /**
      * 企业微信错误代码

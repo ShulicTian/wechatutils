@@ -17,20 +17,27 @@ public class CacheUtil {
     public static CacheManager cacheManager = (CacheManager) CommonCacheManager.getEhCacheManager();
 
     public static void put(String accessTokenCache, String key, Object value) {
-        Cache cache = cacheManager.getCache(accessTokenCache);
-        Element element = new Element(key, value);
-        cache.put(element);
+        if (cacheManager != null) {
+            Cache cache = cacheManager.getCache(accessTokenCache);
+            Element element = new Element(key, value);
+            cache.put(element);
+        }
     }
 
     public static Object get(String accessTokenCache, String key) {
-        Cache cache = cacheManager.getCache(accessTokenCache);
-        Element element = cache.get(key);
-        return element == null ? null : element.getObjectValue();
+        if (cacheManager != null) {
+            Cache cache = cacheManager.getCache(accessTokenCache);
+            Element element = cache != null ? cache.get(key) : null;
+            return element == null ? null : element.getObjectValue();
+        }
+        return null;
     }
 
     public static void remove(String accessTokenCache, String key) {
-        Cache cache = cacheManager.getCache(accessTokenCache);
-        cache.remove(key);
+        if (cacheManager != null) {
+            Cache cache = cacheManager.getCache(accessTokenCache);
+            cache.remove(key);
+        }
     }
 
 }

@@ -1,7 +1,5 @@
 package wechat.qiye.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
@@ -15,10 +13,6 @@ import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,35 +28,6 @@ public class QiYeWeChatUtil {
     private LoginAuthCtrl loginAuthCtrl;
     private MessageCtrl messageCtrl;
     private Map<String, Object> ctrlCache = new HashMap<String, Object>();
-    private Logger logger = LogManager.getLogger(QiYeWeChatUtil.class);
-
-    /**
-     * 加载配置文件方式
-     */
-    private synchronized QiYeParamsEntity loadProps(String path) {
-        QiYeParamsEntity qiYeParamsEntity = null;
-        Properties props = new Properties();
-        InputStream in = null;
-        try {
-            in = new FileInputStream(new File(path));
-            props.load(in);
-            if (null != props) {
-                qiYeParamsEntity = new QiYeParamsEntity(props);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("读取配置文件异常", e);
-        } finally {
-            try {
-                if (null != in) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return qiYeParamsEntity;
-    }
 
     /**
      * 开启成员控制器

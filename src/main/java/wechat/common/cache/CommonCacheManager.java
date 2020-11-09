@@ -3,6 +3,7 @@ package wechat.common.cache;
 import net.sf.ehcache.CacheManager;
 import wechat.common.constant.CacheManagerEnum;
 
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +27,12 @@ public class CommonCacheManager {
     public static Object getEhCacheManager() {
         synchronized (managers) {
             if (!managers.containsKey(CacheManagerEnum.EHCACHE_MANAGER.getKey())) {
-                CacheManager cacheManager = CacheManager.create(System.getProperty("user.dir") + "\\src\\main\\resources\\ehcache.xml");
+                InputStream resource = CommonCacheManager.class.getClassLoader().getResourceAsStream("ehcache.xml");
+                if (resource == null) {
+                    System.err.println("InputStream: NULL");
+                    return null;
+                }
+                CacheManager cacheManager = CacheManager.create(resource);
                 managers.put(CacheManagerEnum.EHCACHE_MANAGER.getKey(), cacheManager);
             }
         }

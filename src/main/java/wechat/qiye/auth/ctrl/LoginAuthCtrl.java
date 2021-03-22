@@ -63,10 +63,10 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
         if (isTokenLose(errorCode)) {
             return getUserIdByCode(code);
         }
-        if (isSuccess(errorCode, "获取部门列表")) {
-            String id = jsonObject.get("UserId").toString();
+        if (isSuccess(errorCode, "获取用户信息")) {
+            String id = jsonObject.get("UserId").getAsString();
             if (id == null) {
-                id = jsonObject.get("OpenId").toString();
+                id = jsonObject.get("UserId").getAsString();
             }
             return id;
         }

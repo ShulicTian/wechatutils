@@ -12,6 +12,7 @@ public class DepartmentTest {
 
     private static QiYeWeChatUtil qiYeWeChatUtil;
     private static Gson gson = new Gson();
+/*
 
     static {
         BaseParamsEntity baseParamsEntity = new BaseParamsEntity("", "", true);
@@ -65,5 +66,6 @@ public class DepartmentTest {
         boolean success = qiYeWeChatUtil.updateDepartment(departmentEntity);
         System.out.println(success);
     }
+*/
 
 }

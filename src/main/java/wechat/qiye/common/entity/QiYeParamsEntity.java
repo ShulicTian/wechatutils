@@ -2,8 +2,6 @@ package wechat.qiye.common.entity;
 
 import wechat.common.entity.BaseParams;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -81,12 +79,11 @@ public class QiYeParamsEntity extends BaseParams {
     /**
      * 加载配置文件方式
      */
-    public static synchronized QiYeParamsEntity loadProps(String path) {
+    public static synchronized QiYeParamsEntity loadProps(InputStream inputStream) {
         QiYeParamsEntity qiYeParamsEntity = null;
         Properties props = new Properties();
-        InputStream in = null;
+        InputStream in = inputStream;
         try {
-            in = new FileInputStream(new File(path));
             props.load(in);
             if (null != props) {
                 qiYeParamsEntity = new QiYeParamsEntity(props);

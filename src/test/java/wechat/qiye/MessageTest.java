@@ -50,5 +50,5 @@ public class MessageTest {
         taskCardMessageStatus.setUserids(new String[]{""});
         taskCardMessageStatus.setClickedKey("yes1");
         qiYeWeChatUtil.updateMessageStatus(taskCardMessageStatus);
-    }
+    }*/
 }

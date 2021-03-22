@@ -6,6 +6,7 @@ import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.common.entity.BaseParamsEntity;
 import wechat.qiye.utils.QiYeWeChatUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonnelTest {
@@ -63,8 +64,20 @@ public class PersonnelTest {
 
     @Test
     public void getPersonList() {
-        List<PersonnelEntity> PersonnelList = qiYeWeChatUtil.getPersonnelList("0102", "0");
-        System.out.println(gson.toJson(PersonnelList));
+        List<PersonnelEntity> PersonnelList = qiYeWeChatUtil.getPersonnelList("84", "0");
+        List<String> list = new ArrayList<>();
+        int ind = 0;
+        for (PersonnelEntity person : PersonnelList) {
+            list.add(person.getUserId());
+            ind++;
+            if (ind == 200) {
+//                qiYeWeChatUtil.batchDeletePersonnel(list.toArray(new String[list.size()]));
+                list = new ArrayList<>();
+                ind = 0;
+            }
+        }
+
+//        System.out.println(gson.toJson(PersonnelList));
     }
 
 }

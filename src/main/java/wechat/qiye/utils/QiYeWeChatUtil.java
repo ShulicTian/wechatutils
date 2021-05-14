@@ -1,5 +1,6 @@
 package wechat.qiye.utils;
 
+import com.google.gson.Gson;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
@@ -151,6 +152,30 @@ public class QiYeWeChatUtil {
     }
 
     /**
+     * 获取部门下人员列表
+     *
+     * @param departmentId
+     * @param fetchChild
+     * @param status
+     * @return
+     */
+    public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, String fetchChild, Integer status) {
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取部门下人员列表
+     *
+     * @param departmentId
+     * @param fetchChild
+     * @param status
+     * @return
+     */
+    public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, String fetchChild, Integer status) {
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
+    }
+
+    /**
      * 获取部门下人员详情列表
      *
      * @param departmentId
@@ -158,7 +183,7 @@ public class QiYeWeChatUtil {
      * @return
      */
     public List<PersonnelEntity> getPersonnelDescList(String departmentId, String fetchChild) {
-        return personnelCtrl.getDepartmentPersonneDesclList(departmentId, fetchChild);
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild);
     }
 
     /**
@@ -299,13 +324,16 @@ public class QiYeWeChatUtil {
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
         String ticket = JsApiTicketUtil.getJsApiTicket(qiYeParamsEntity);
         String nonceStr = UUID.randomUUID().toString();
-        long timestamp = System.currentTimeMillis();
-        String signature = SHA1.getSHA1("jsapi_ticket=" + ticket + "&nonceStr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url);
+        long timestamp = System.currentTimeMillis() / 1000;
+        String signature = SHA1.getSHA1("jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url);
 
         jsSdkConfigEntity.setAppId(qiYeParamsEntity.getCorpId());
         jsSdkConfigEntity.setTimestamp(timestamp);
         jsSdkConfigEntity.setNonceStr(nonceStr);
         jsSdkConfigEntity.setSignature(signature);
+
+        System.out.println(ticket);
+        System.out.println(new Gson().toJson(jsSdkConfigEntity));
 
         return jsSdkConfigEntity;
     }

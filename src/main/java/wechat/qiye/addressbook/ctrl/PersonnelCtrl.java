@@ -35,9 +35,10 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      *
      * @param personnelEntity
      */
+    @Override
     public boolean create(PersonnelEntity personnelEntity) {
         String url = BaseUrlConstant.QIYE_CU_PERSONNEL.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, personnelEtityToJsonStringByAdapter(personnelEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes());
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -52,9 +53,10 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      *
      * @param personnelEntity
      */
+    @Override
     public boolean update(PersonnelEntity personnelEntity) {
         String url = BaseUrlConstant.QIYE_CU_PERSONNEL.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, personnelEtityToJsonStringByAdapter(personnelEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes());
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -69,6 +71,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      *
      * @param personnelId
      */
+    @Override
     public PersonnelEntity get(String personnelId) {
         String url = BaseUrlConstant.QIYE_RD_PERSONNEL.
                 replace("METHOD", QiYeUriEnum.GET.getUri()).
@@ -92,6 +95,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      *
      * @param personnelId
      */
+    @Override
     public boolean delete(String personnelId) {
         String url = BaseUrlConstant.QIYE_RD_PERSONNEL.
                 replace("METHOD", QiYeUriEnum.DELETE.getUri()).
@@ -134,7 +138,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      * @param personnelEntity
      * @return
      */
-    private String personnelEtityToJsonStringByAdapter(PersonnelEntity personnelEntity) {
+    private String personnelEntityToJsonStringByAdapter(PersonnelEntity personnelEntity) {
         Gson gson = new GsonBuilder().registerTypeAdapter(PersonnelEntity.class, new PersonnelTypeAdapter()).create();
         return gson.toJson(personnelEntity);
     }
@@ -174,7 +178,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      * @param fetchChild   1递归 0不递归
      * @return
      */
-    public List<PersonnelEntity> getDepartmentPersonneDesclList(String departmentId, String fetchChild) {
+    public List<PersonnelEntity> getDepartmentPersonnelDescList(String departmentId, String fetchChild) {
         String url = BaseUrlConstant.QIYE_DEPARTMENT_PERSONNEL.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).

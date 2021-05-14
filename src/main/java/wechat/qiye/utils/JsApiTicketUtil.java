@@ -32,7 +32,7 @@ public class JsApiTicketUtil extends RedisSwitch {
 
         String jsApiTicket = getCacheJsApiTicket(qiYeParamsEntity.getAgentId());
         if (StringUtils.isEmpty(jsApiTicket)) {
-            jsApiTicket = reuqestJsApiTicket(qiYeParamsEntity);
+            jsApiTicket = requestJsApiTicket(qiYeParamsEntity);
         }
         return jsApiTicket;
     }
@@ -43,7 +43,7 @@ public class JsApiTicketUtil extends RedisSwitch {
      * @param qiYeParamsEntity
      * @return
      */
-    public static String reuqestJsApiTicket(QiYeParamsEntity qiYeParamsEntity) {
+    public static String requestJsApiTicket(QiYeParamsEntity qiYeParamsEntity) {
         String url = BaseUrlConstant.QIYE_JSAPI_TICKET.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String result = HttpsRequestUtil.httpsGet(url);
         JsApiTicketEntity jsApiTicketEntity = new Gson().fromJson(result, JsApiTicketEntity.class);

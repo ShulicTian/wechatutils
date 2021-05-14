@@ -42,7 +42,7 @@ public class AccessTokenUtil extends RedisSwitch {
     private static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken(qiYeParamsEntity.getAgentId());
+            accessToken = getCacheAccessToken();
         } catch (Exception e) {
             logger.error("【QiYeWeChat】{} {}", "缓存获取异常", e);
             e.printStackTrace();
@@ -79,7 +79,7 @@ public class AccessTokenUtil extends RedisSwitch {
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.info("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(qiYeParamsEntity.getAgentId(), accessTokenEntity);
+            cacheAccessToken(accessTokenEntity);
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -89,14 +89,13 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 缓存AccessToken
      *
-     * @param tokenKey
      * @param accessTokenEntity
      */
-    private static void cacheAccessToken(String tokenKey, AccessTokenEntity accessTokenEntity) {
+    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity) {
         if (openRedisCache) {
-            RedisUtil.putString(tokenKey, accessTokenEntity.getAccessToken(), jedisPool);
+            RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
         } else {
-            CacheUtil.put(CacheUtil.QIYE_ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
         }
         logger.info("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -104,15 +103,14 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 从缓存获取AccessToken
      *
-     * @param tokenKey
      * @return
      */
-    private static String getCacheAccessToken(String tokenKey) {
+    private static String getCacheAccessToken() {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(tokenKey, jedisPool);
+            accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.QIYE_ACCESS_TOKEN_CACHE, tokenKey);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE);
         }
         if (accessToken != null) {
             logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", accessToken);

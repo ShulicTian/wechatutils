@@ -38,7 +38,7 @@ public class AccessTokenUtil extends RedisSwitch {
     private static String getClientCredentialAccessToken(WeiXinParamsEntity weiXinParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken(weiXinParamsEntity.getAppId());
+            accessToken = getCacheAccessToken();
         } catch (Exception e) {
             logger.error("【WeiXin】{} {}", "缓存获取异常", e);
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class AccessTokenUtil extends RedisSwitch {
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.info("【WeiXin】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(weiXinParamsEntity.getAppId(), accessTokenEntity);
+            cacheAccessToken(accessTokenEntity);
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【WeiXin】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -75,14 +75,13 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 缓存AccessToken
      *
-     * @param tokenKey
      * @param accessTokenEntity
      */
-    private static void cacheAccessToken(String tokenKey, AccessTokenEntity accessTokenEntity) {
+    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity) {
         if (openRedisCache) {
-            RedisUtil.putString(tokenKey, accessTokenEntity.getAccessToken(), jedisPool);
+            RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
         } else {
-            CacheUtil.put(CacheUtil.WX_ACCESS_TOKEN_CACHE, tokenKey, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
         }
         logger.info("【WeiXin】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -90,15 +89,14 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 从缓存获取AccessToken
      *
-     * @param tokenKey
      * @return
      */
-    private static String getCacheAccessToken(String tokenKey) {
+    private static String getCacheAccessToken() {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(tokenKey, jedisPool);
+            accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.WX_ACCESS_TOKEN_CACHE, tokenKey);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE);
         }
         if (accessToken != null) {
             logger.info("【WeiXin】{} [{}]", "缓存获取AccessToken", accessToken);

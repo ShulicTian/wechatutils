@@ -18,7 +18,7 @@ public class JsApiTicketEntity extends QiYeReceiveEntity {
      * ticket有效时间
      */
     @SerializedName("expires_in")
-    private String expiresIn;
+    private int expiresIn;
 
     public String getTicket() {
         return ticket;
@@ -28,11 +28,11 @@ public class JsApiTicketEntity extends QiYeReceiveEntity {
         this.ticket = ticket;
     }
 
-    public String getExpiresIn() {
+    public int getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(String expiresIn) {
+    public void setExpiresIn(int expiresIn) {
         this.expiresIn = expiresIn;
     }
 }

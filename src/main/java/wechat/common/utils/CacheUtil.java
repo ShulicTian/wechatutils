@@ -11,9 +11,10 @@ import wechat.common.cache.CommonCacheManager;
  * @author tianslc
  */
 public class CacheUtil {
-    public static final String QIYE_ACCESS_TOKEN_CACHE = "QiYeAccessTokenCache";
-    public static final String QIYE_JSAPI_TICKET_CACHE = "QiYeJsApiTicket";
-    public static final String WX_ACCESS_TOKEN_CACHE = "WXAccessTokenCache";
+    public static final String CACHE_QI_YE = "cache_qi_ye";
+    public static final String CACHE_WX = "cache_wx";
+    public static final String ACCESS_TOKEN_CACHE = "AccessTokenCache";
+    public static final String JSAPI_TICKET_CACHE = "JsApiTicket";
     public static CacheManager cacheManager = (CacheManager) CommonCacheManager.getEhCacheManager();
 
     public static void put(String accessTokenCache, String key, Object value) {

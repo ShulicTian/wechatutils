@@ -27,6 +27,12 @@ public class RedisConfig extends JedisPoolConfig {
         super();
     }
 
+    public RedisConfig(String address, Integer port, String auth) {
+        this.address = address;
+        this.port = port;
+        this.auth = auth;
+    }
+
     public String getAddress() {
         return address;
     }

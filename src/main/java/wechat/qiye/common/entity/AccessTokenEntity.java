@@ -19,7 +19,7 @@ public class AccessTokenEntity extends QiYeReceiveEntity {
      * AccessToken有效时间
      */
     @SerializedName("expires_in")
-    private String expiresIn;
+    private int expiresIn;
 
     public String getAccessToken() {
         return accessToken;
@@ -29,11 +29,11 @@ public class AccessTokenEntity extends QiYeReceiveEntity {
         this.accessToken = accessToken;
     }
 
-    public String getExpiresIn() {
+    public int getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(String expiresIn) {
+    public void setExpiresIn(int expiresIn) {
         this.expiresIn = expiresIn;
     }
 }

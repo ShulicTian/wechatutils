@@ -88,7 +88,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      */
     public DepartmentEntity get(String departmentId) {
         List<DepartmentEntity> list = getList(departmentId);
-        if (list.size() > 0) {
+        if (list != null && list.size() > 0) {
             for (DepartmentEntity entity : list) {
                 if (entity.getId().equals(departmentId)) {
                     return entity;

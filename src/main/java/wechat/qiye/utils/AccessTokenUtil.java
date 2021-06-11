@@ -78,7 +78,7 @@ public class AccessTokenUtil extends RedisSwitch {
         String result = HttpsRequestUtil.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
-            logger.info("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
+            logger.debug("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
             cacheAccessToken(accessTokenEntity);
             return accessTokenEntity.getAccessToken();
         }
@@ -97,7 +97,7 @@ public class AccessTokenUtil extends RedisSwitch {
         } else {
             CacheUtil.put(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
         }
-        logger.info("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
+        logger.debug("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
 
     /**

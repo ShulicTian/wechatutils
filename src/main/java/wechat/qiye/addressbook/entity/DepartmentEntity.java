@@ -36,6 +36,15 @@ public class DepartmentEntity extends QiYeReceiveEntity {
      */
     private String order;
 
+    public DepartmentEntity() {
+    }
+
+    public DepartmentEntity(String id, String name, String parentId) {
+        this.id = id;
+        this.name = name;
+        this.parentId = parentId;
+    }
+
     public String getId() {
         return id;
     }

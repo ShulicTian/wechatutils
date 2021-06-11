@@ -332,9 +332,6 @@ public class QiYeWeChatUtil {
         jsSdkConfigEntity.setNonceStr(nonceStr);
         jsSdkConfigEntity.setSignature(signature);
 
-        System.out.println(ticket);
-        System.out.println(new Gson().toJson(jsSdkConfigEntity));
-
         return jsSdkConfigEntity;
     }
 

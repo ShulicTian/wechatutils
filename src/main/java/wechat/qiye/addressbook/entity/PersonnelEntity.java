@@ -146,6 +146,15 @@ public class PersonnelEntity extends QiYeReceiveEntity {
     @SerializedName("qr_code")
     private String qrCode;
 
+    public PersonnelEntity() {
+    }
+
+    public PersonnelEntity(String userId, String name, String mobile) {
+        this.userId = userId;
+        this.name = name;
+        this.mobile = mobile;
+    }
+
     public String getUserId() {
         return userId;
     }

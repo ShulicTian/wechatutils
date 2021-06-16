@@ -107,7 +107,7 @@ public class MessageTypeAdapter<T> extends TypeAdapter<MessageEntity<T>> {
                     out.name("miniprogram_notice");
                 }
                 if (value.getMessage() instanceof TaskCardMessage) {
-                    out.name("taskcard");
+                    out.name("interactive_taskcard");
                 }
                 out.jsonValue(gson.toJson(value.getMessage()));
             }

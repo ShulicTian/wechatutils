@@ -42,7 +42,7 @@ public class AccessTokenUtil extends RedisSwitch {
     private static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken();
+            accessToken = getCacheAccessToken(qiYeParamsEntity);
         } catch (Exception e) {
             logger.error("【QiYeWeChat】{} {}", "缓存获取异常", e);
             e.printStackTrace();
@@ -63,7 +63,6 @@ public class AccessTokenUtil extends RedisSwitch {
      */
     private static String getAddressBookAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         qiYeParamsEntity.setSecret(qiYeParamsEntity.getAddressBookSecret());
-        qiYeParamsEntity.setAgentId("AddressBook");
         return getCorpAccessToken(qiYeParamsEntity);
     }
 
@@ -79,7 +78,7 @@ public class AccessTokenUtil extends RedisSwitch {
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.debug("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(accessTokenEntity);
+            cacheAccessToken(accessTokenEntity, qiYeParamsEntity.isOpenGlobalAddressBookSecret());
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -91,9 +90,13 @@ public class AccessTokenUtil extends RedisSwitch {
      *
      * @param accessTokenEntity
      */
-    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity) {
+    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity, boolean isOpenAddressBook) {
         if (openRedisCache) {
-            RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+            if (isOpenAddressBook) {
+                RedisUtil.putStringWithExpire(CacheUtil.ADDRESS_BOOK_ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+            } else {
+                RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+            }
         } else {
             CacheUtil.put(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
         }
@@ -105,10 +108,14 @@ public class AccessTokenUtil extends RedisSwitch {
      *
      * @return
      */
-    private static String getCacheAccessToken() {
+    private static String getCacheAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
+            if (qiYeParamsEntity.isOpenGlobalAddressBookSecret()) {
+                accessToken = RedisUtil.getString(CacheUtil.ADDRESS_BOOK_ACCESS_TOKEN_CACHE, jedisPool);
+            } else {
+                accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
+            }
         } else {
             accessToken = (String) CacheUtil.get(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE);
         }

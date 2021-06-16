@@ -83,6 +83,11 @@ public class BaseUrlConstant {
     public static String QIYE_APP_JSAPI_TICKET = "https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token=ACCESS_TOKEN&type=agent_config";
 
     /**
+     * 企业微信获取加入企业二维码（GET）
+     */
+    public static String QIYE_QRCODE = "https://qyapi.weixin.qq.com/cgi-bin/corp/get_join_qrcode?access_token=ACCESS_TOKEN&size_type=SIZE_TYPE";
+
+    /**
      * 微信获取Token的URL（GET）
      */
     public static String WX_GET_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=GRANTTYPE&appid=APPID&secret=APPSECRET";

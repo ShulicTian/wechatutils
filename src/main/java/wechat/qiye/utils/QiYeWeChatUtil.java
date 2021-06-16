@@ -1,10 +1,10 @@
 package wechat.qiye.utils;
 
-import com.google.gson.Gson;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.QrcodeEntity;
 import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.common.aes.SHA1;
 import wechat.qiye.common.entity.JsSdkConfigEntity;
@@ -265,11 +265,12 @@ public class QiYeWeChatUtil {
     public boolean forceDeleteDepartment(String departmentId) {
         List<DepartmentEntity> departmentEntities = getDepartmentList(departmentId);
         if (departmentEntities != null && departmentEntities.size() > 0) {
+            departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
             departmentEntities.forEach(department -> {
                 List<PersonnelEntity> personnelEntities = getPersonnelDescList(department.getId(), "0");
                 if (personnelEntities != null && personnelEntities.size() > 0) {
                     List<String> userIds = new ArrayList<>();
-                    personnelEntities.stream().forEach(personnel -> {
+                    personnelEntities.forEach(personnel -> {
                         if (personnel.getDepartment().length == 1) {
                             userIds.add(personnel.getUserId());
                         } else {
@@ -278,12 +279,12 @@ public class QiYeWeChatUtil {
                             departmentIds.remove(index);
                             personnel.getOrder()[index] = null;
                             personnel.getIsLaderInDept()[index] = null;
-                            personnel.setDepartment(departmentIds.toArray(new String[departmentIds.size()]));
+                            personnel.setDepartment(departmentIds.toArray(new String[0]));
                             updatePersonnel(personnel);
                         }
                     });
                     if (userIds.size() > 0) {
-                        batchDeletePersonnel(userIds.toArray(new String[userIds.size()]));
+                        batchDeletePersonnel(userIds.toArray(new String[0]));
                     }
                 }
                 deleteDepartment(department.getId());
@@ -333,6 +334,16 @@ public class QiYeWeChatUtil {
         jsSdkConfigEntity.setSignature(signature);
 
         return jsSdkConfigEntity;
+    }
+
+    /**
+     * 获取企业二维码
+     *
+     * @param sizeType qrcode尺寸类型，1: 171 x 171; 2: 399 x 399; 3: 741 x 741; 4: 2052 x 2052
+     * @return
+     */
+    public QrcodeEntity getQrCodeUrl(String sizeType) {
+        return personnelCtrl.getQrcode(sizeType);
     }
 
 }

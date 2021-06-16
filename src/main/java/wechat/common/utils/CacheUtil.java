@@ -14,6 +14,7 @@ public class CacheUtil {
     public static final String CACHE_QI_YE = "cache_qi_ye";
     public static final String CACHE_WX = "cache_wx";
     public static final String ACCESS_TOKEN_CACHE = "AccessTokenCache";
+    public static final String ADDRESS_BOOK_ACCESS_TOKEN_CACHE = "AddressBookAccessTokenCache";
     public static final String JSAPI_TICKET_CACHE = "JsApiTicket";
     public static CacheManager cacheManager = (CacheManager) CommonCacheManager.getEhCacheManager();
 

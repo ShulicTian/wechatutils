@@ -9,6 +9,7 @@ import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.adapter.PersonnelTypeAdapter;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.QrcodeEntity;
 import wechat.qiye.common.constant.QiYeUriEnum;
 import wechat.qiye.common.entity.QiYeParamsEntity;
 import wechat.qiye.common.entity.QiYeReceiveEntity;
@@ -195,6 +196,28 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
         }
         if (isSuccess(errorCode, "获取人员详情列表")) {
             return personnelList;
+        }
+        return null;
+    }
+
+    /**
+     * 获取企业二维码
+     *
+     * @param sizeType
+     */
+    public QrcodeEntity getQrcode(String sizeType) {
+        String url = BaseUrlConstant.QIYE_QRCODE.
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
+                replace("SIZE_TYPE", sizeType);
+        String result = HttpsRequestUtil.httpsGet(url);
+        QrcodeEntity qrcodeEntity = gson.fromJson(result, QrcodeEntity.class);
+        Integer errorCode = qrcodeEntity.getErrcode();
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return getQrcode(sizeType);
+        }
+        if (isSuccess(errorCode, "获取企业二维码")) {
+            return qrcodeEntity;
         }
         return null;
     }

@@ -13,6 +13,7 @@ import wechat.qiye.common.interfaces.BaseCtrl;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.utils.AccessTokenUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      */
     public boolean create(DepartmentEntity departmentEntity) {
         String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes(StandardCharsets.UTF_8));
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -51,7 +52,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      */
     public boolean update(DepartmentEntity departmentEntity) {
         String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes(StandardCharsets.UTF_8));
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次

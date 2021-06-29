@@ -17,6 +17,7 @@ import wechat.qiye.common.interfaces.BaseCtrl;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.utils.AccessTokenUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
     @Override
     public boolean create(PersonnelEntity personnelEntity) {
         String url = BaseUrlConstant.QIYE_CU_PERSONNEL.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes(StandardCharsets.UTF_8));
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -57,7 +58,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
     @Override
     public boolean update(PersonnelEntity personnelEntity) {
         String url = BaseUrlConstant.QIYE_CU_PERSONNEL.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, personnelEntityToJsonStringByAdapter(personnelEntity).getBytes(StandardCharsets.UTF_8));
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, QiYeReceiveEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -123,7 +124,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("useridlist", GsonUtil.parseJsonArray(gson.toJson(personnelIds)));
-        String result = HttpsRequestUtil.httpsPost(url, jsonObject.toString().getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, jsonObject.toString().getBytes(StandardCharsets.UTF_8));
         QiYeReceiveEntity qiYeReceiveEntity = gson.fromJson(result, PersonnelEntity.class);
         Integer errorCode = qiYeReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次

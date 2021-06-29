@@ -13,6 +13,8 @@ import wechat.qiye.message.entity.SendReceiveEntity;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
 import wechat.qiye.utils.AccessTokenUtil;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * 消息控制器
  *
@@ -33,7 +35,7 @@ public class MessageCtrl extends BaseCtrlAbs {
         String url = BaseUrlConstant.QIYE_SEND_MESSAGE.
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String params = messageEntityToJsonStringByAdapter(messageEntity);
-        String result = HttpsRequestUtil.httpsPost(url, params.getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, params.getBytes(StandardCharsets.UTF_8));
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
@@ -51,7 +53,7 @@ public class MessageCtrl extends BaseCtrlAbs {
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
         String url = BaseUrlConstant.QIYE_UPDATE_MESSAGE.
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
-        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(taskCardMessageStatus).getBytes());
+        String result = HttpsRequestUtil.httpsPost(url, gson.toJson(taskCardMessageStatus).getBytes(StandardCharsets.UTF_8));
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次

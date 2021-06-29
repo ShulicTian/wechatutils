@@ -39,7 +39,7 @@ public class AccessTokenUtil extends RedisSwitch {
      * @param qiYeParamsEntity
      * @return
      */
-    private static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+    public static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         String accessToken = "";
         try {
             accessToken = getCacheAccessToken(qiYeParamsEntity);
@@ -78,7 +78,7 @@ public class AccessTokenUtil extends RedisSwitch {
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.debug("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(accessTokenEntity, qiYeParamsEntity.isOpenGlobalAddressBookSecret());
+            cacheAccessToken(qiYeParamsEntity.getAgentId(), accessTokenEntity, qiYeParamsEntity.isOpenGlobalAddressBookSecret());
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -88,17 +88,18 @@ public class AccessTokenUtil extends RedisSwitch {
     /**
      * 缓存AccessToken
      *
+     * @param catchKey
      * @param accessTokenEntity
      */
-    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity, boolean isOpenAddressBook) {
+    private static void cacheAccessToken(String catchKey, AccessTokenEntity accessTokenEntity, boolean isOpenAddressBook) {
         if (openRedisCache) {
             if (isOpenAddressBook) {
                 RedisUtil.putStringWithExpire(CacheUtil.ADDRESS_BOOK_ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
             } else {
-                RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+                RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE + "_" + catchKey, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
             }
         } else {
-            CacheUtil.put(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE + "_" + catchKey, accessTokenEntity.getAccessToken());
         }
         logger.debug("【QiYeWeChat】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -114,10 +115,10 @@ public class AccessTokenUtil extends RedisSwitch {
             if (qiYeParamsEntity.isOpenGlobalAddressBookSecret()) {
                 accessToken = RedisUtil.getString(CacheUtil.ADDRESS_BOOK_ACCESS_TOKEN_CACHE, jedisPool);
             } else {
-                accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
+                accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE + "_" + qiYeParamsEntity.getAgentId(), jedisPool);
             }
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_QI_YE, CacheUtil.ACCESS_TOKEN_CACHE + "_" + qiYeParamsEntity.getAgentId());
         }
         if (accessToken != null) {
             logger.info("【QiYeWeChat】{} [{}]", "缓存获取AccessToken", accessToken);

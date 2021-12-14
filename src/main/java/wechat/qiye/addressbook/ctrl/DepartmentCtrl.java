@@ -108,7 +108,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
-                replace("ID", departmentId);
+                replace("#ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
         JsonArray departments = jsonObject.getAsJsonArray("department");

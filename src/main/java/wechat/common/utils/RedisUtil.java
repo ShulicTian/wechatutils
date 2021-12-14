@@ -12,13 +12,13 @@ public class RedisUtil {
 
     public static void putString(String key, String value, JedisPool jedisPool) {
         Jedis jedis = jedisPool.getResource();
-        jedis.append(key, value);
+        jedis.set(key, value);
         jedis.close();
     }
 
     public static void putStringWithExpire(String key, String value, JedisPool jedisPool, int expire) {
         Jedis jedis = jedisPool.getResource();
-        jedis.append(key, value);
+        jedis.set(key, value);
         jedis.expire(key, expire);
         jedis.close();
     }

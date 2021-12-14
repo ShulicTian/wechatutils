@@ -35,7 +35,7 @@ public class BaseUrlConstant {
     /**
      * 企业微信获取删除部门的URL（GET）
      */
-    public static String QIYE_RD_DEPARTMENT = "https://qyapi.weixin.qq.com/cgi-bin/department/METHOD?access_token=ACCESS_TOKEN&id=ID";
+    public static String QIYE_RD_DEPARTMENT = "https://qyapi.weixin.qq.com/cgi-bin/department/METHOD?access_token=ACCESS_TOKEN&id=#ID";
 
     /**
      * 企业微信网页链接登录认证的URL（LINK）

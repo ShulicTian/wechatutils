@@ -277,14 +277,39 @@ public class QiYeWeChatUtil {
                             List<String> departmentIds = Arrays.stream(personnel.getDepartment()).collect(Collectors.toList());
                             int index = departmentIds.indexOf(department.getId());
                             departmentIds.remove(index);
-                            personnel.getOrder()[index] = null;
-                            personnel.getIsLaderInDept()[index] = null;
+
+                            List<Integer> orderList = new ArrayList<>(Arrays.asList(personnel.getOrder()));
+                            orderList.remove(index);
+                            personnel.setOrder(orderList.toArray(new Integer[]{}));
+
+                            List<Integer> laderList = new ArrayList<>(Arrays.asList(personnel.getIsLaderInDept()));
+                            laderList.remove(index);
+                            personnel.setIsLaderInDept(laderList.toArray(new Integer[]{}));
+
                             personnel.setDepartment(departmentIds.toArray(new String[0]));
+                            personnel.setMainDepartment(departmentIds.get(0));
                             updatePersonnel(personnel);
                         }
                     });
                     if (userIds.size() > 0) {
-                        batchDeletePersonnel(userIds.toArray(new String[0]));
+                        if (userIds.size() > 200) {
+                            int startIndex = 0;
+                            int endIndex = 199;
+                            while (userIds.size() >= endIndex) {
+                                batchDeletePersonnel(userIds.subList(startIndex, endIndex).toArray(new String[0]));
+                                if (endIndex == userIds.size()) {
+                                    endIndex++;
+                                } else if (userIds.size() > (endIndex + 199)) {
+                                    startIndex += 199;
+                                    endIndex += 199;
+                                } else {
+                                    startIndex = endIndex;
+                                    endIndex = userIds.size();
+                                }
+                            }
+                        } else {
+                            batchDeletePersonnel(userIds.toArray(new String[0]));
+                        }
                     }
                 }
                 deleteDepartment(department.getId());

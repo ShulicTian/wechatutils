@@ -7,8 +7,9 @@ package wechat.weixin.common.entity;
  */
 
 public enum TokenEnum {
-    CLIENT_CREDENTIAL("client_credential");
-    String value;
+    CLIENT_CREDENTIAL("client_credential"),
+    AUTHORIZATION_CODE("authorization_code");
+    private final String value;
 
     TokenEnum(String value) {
         this.value = value;

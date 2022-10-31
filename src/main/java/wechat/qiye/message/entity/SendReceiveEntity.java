@@ -1,13 +1,13 @@
 package wechat.qiye.message.entity;
 
-import wechat.qiye.common.entity.QiYeReceiveEntity;
+import wechat.common.entity.ReceiveEntity;
 
 /**
  * 消息发送返回基础字段
  *
  * @author tianslc
  */
-public class SendReceiveEntity extends QiYeReceiveEntity {
+public class SendReceiveEntity extends ReceiveEntity {
 
     /**
      * 发送失败的userID

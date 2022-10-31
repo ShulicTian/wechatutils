@@ -1,14 +1,14 @@
 package wechat.qiye.addressbook.entity;
 
 import com.google.gson.annotations.SerializedName;
-import wechat.qiye.common.entity.QiYeReceiveEntity;
+import wechat.common.entity.ReceiveEntity;
 
 /**
  * 成员信息实体
  *
  * @author tianslc
  */
-public class QrcodeEntity extends QiYeReceiveEntity {
+public class QrcodeEntity extends ReceiveEntity {
     @SerializedName("join_qrcode")
     private String joinQrcode;
 

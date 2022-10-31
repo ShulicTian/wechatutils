@@ -1,13 +1,14 @@
 package wechat.qiye.common.entity;
 
 import com.google.gson.annotations.SerializedName;
+import wechat.common.entity.ReceiveEntity;
 
 /**
  * AccessToken响应实体
  *
  * @author tianslc
  */
-public class AccessTokenEntity extends QiYeReceiveEntity {
+public class AccessTokenEntity extends ReceiveEntity {
 
     /**
      * AccessToken

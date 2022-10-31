@@ -25,7 +25,7 @@ public class BaseUrlConstant {
     /**
      * 企业微信获取部门人员的URL（GET）
      */
-    public static String QIYE_DEPARTMENT_PERSONNEL = "https://qyapi.weixin.qq.com/cgi-bin/user/METHOD?access_token=ACCESS_TOKEN&department_id=DEPARTMENT_ID&fetch_child=FETCH_CHILD";
+    public static String QIYE_DEPARTMENT_PERSONNEL = "https://qyapi.weixin.qq.com/cgi-bin/user/METHOD?access_token=ACCESS_TOKEN&department_id=DEPARTMENT_ID";
 
     /**
      * 企业微信创建更新部门的URL（POST）
@@ -90,6 +90,16 @@ public class BaseUrlConstant {
     /**
      * 微信获取Token的URL（GET）
      */
-    public static String WX_GET_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=GRANTTYPE&appid=APPID&secret=APPSECRET";
+    public static String WX_GET_TOKEN = "https://api.weixin.qq.com/cgi-bin/token?grant_type=GRANTTYPE&appid=APPID&secret=SECRET";
+
+    /**
+     * 小程序登陆（GET）
+     */
+    public static String MINI_LOGIN = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
+
+    /**
+     * 小程序获取手机号（POST）
+     */
+    public static String MINI_GET_MOBILE = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN";
 
 }

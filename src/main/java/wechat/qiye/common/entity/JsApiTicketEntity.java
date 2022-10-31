@@ -1,13 +1,14 @@
 package wechat.qiye.common.entity;
 
 import com.google.gson.annotations.SerializedName;
+import wechat.common.entity.ReceiveEntity;
 
 /**
  * JsApiTicket响应实体
  *
  * @author tianslc
  */
-public class JsApiTicketEntity extends QiYeReceiveEntity {
+public class JsApiTicketEntity extends ReceiveEntity {
 
     /**
      * ticket

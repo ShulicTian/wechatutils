@@ -144,46 +144,42 @@ public class QiYeWeChatUtil {
      * 获取部门下人员列表
      *
      * @param departmentId
-     * @param fetchChild
      * @return
      */
-    public List<PersonnelEntity> getPersonnelList(String departmentId, String fetchChild) {
-        return personnelCtrl.getDepartmentPersonnelList(departmentId, fetchChild);
+    public List<PersonnelEntity> getPersonnelList(String departmentId) {
+        return personnelCtrl.getDepartmentPersonnelList(departmentId);
     }
 
     /**
      * 获取部门下人员列表
      *
      * @param departmentId
-     * @param fetchChild
      * @param status
      * @return
      */
-    public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, String fetchChild, Integer status) {
-        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
+    public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, Integer status) {
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
 
     /**
      * 获取部门下人员列表
      *
      * @param departmentId
-     * @param fetchChild
      * @param status
      * @return
      */
-    public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, String fetchChild, Integer status) {
-        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
+    public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, Integer status) {
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
 
     /**
      * 获取部门下人员详情列表
      *
      * @param departmentId
-     * @param fetchChild
      * @return
      */
-    public List<PersonnelEntity> getPersonnelDescList(String departmentId, String fetchChild) {
-        return personnelCtrl.getDepartmentPersonnelDescList(departmentId, fetchChild);
+    public List<PersonnelEntity> getPersonnelDescList(String departmentId) {
+        return personnelCtrl.getDepartmentPersonnelDescList(departmentId);
     }
 
     /**
@@ -267,7 +263,7 @@ public class QiYeWeChatUtil {
         if (departmentEntities != null && departmentEntities.size() > 0) {
             departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
             departmentEntities.forEach(department -> {
-                List<PersonnelEntity> personnelEntities = getPersonnelDescList(department.getId(), "0");
+                List<PersonnelEntity> personnelEntities = getPersonnelDescList(department.getId());
                 if (personnelEntities != null && personnelEntities.size() > 0) {
                     List<String> userIds = new ArrayList<>();
                     personnelEntities.forEach(personnel -> {
@@ -286,7 +282,7 @@ public class QiYeWeChatUtil {
                             laderList.remove(index);
                             personnel.setIsLaderInDept(laderList.toArray(new Integer[]{}));
 
-                            personnel.setDepartment(departmentIds.toArray(new String[0]));
+                            personnel.setDepartment(departmentIds.toArray(new String[]{}));
                             personnel.setMainDepartment(departmentIds.get(0));
                             updatePersonnel(personnel);
                         }
@@ -308,12 +304,52 @@ public class QiYeWeChatUtil {
                                 }
                             }
                         } else {
-                            batchDeletePersonnel(userIds.toArray(new String[0]));
+                            batchDeletePersonnel(userIds.toArray(new String[]{}));
                         }
                     }
                 }
                 deleteDepartment(department.getId());
             });
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 根据人员状态彻底删除人员
+     *
+     * @return
+     */
+    public boolean deletePersonnelByNotStatus(String departmentId, Integer status) {
+        List<DepartmentEntity> departmentEntities = departmentCtrl.getIdList("1");
+        if (departmentEntities != null && departmentEntities.size() > 0) {
+            departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
+            Set<String> userIds = new HashSet<>();
+            departmentEntities.forEach(department -> {
+                List<PersonnelEntity> personnelEntities = getPersonnelListByNotStatus(department.getId(), status);
+                userIds.addAll(personnelEntities.stream().map(PersonnelEntity::getUserId).collect(Collectors.toList()));
+            });
+            List<String> userIdList = new ArrayList<>(userIds);
+            if (userIdList.size() > 0) {
+                if (userIdList.size() > 200) {
+                    int startIndex = 0;
+                    int endIndex = 199;
+                    while (userIdList.size() >= endIndex) {
+                        batchDeletePersonnel(userIdList.subList(startIndex, endIndex).toArray(new String[0]));
+                        if (endIndex == userIdList.size()) {
+                            endIndex++;
+                        } else if (userIdList.size() > (endIndex + 199)) {
+                            startIndex += 199;
+                            endIndex += 199;
+                        } else {
+                            startIndex = endIndex;
+                            endIndex = userIdList.size();
+                        }
+                    }
+                } else {
+                    batchDeletePersonnel(userIds.toArray(new String[]{}));
+                }
+            }
             return true;
         }
         return false;

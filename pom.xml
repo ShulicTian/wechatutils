@@ -69,4 +69,31 @@
             <version>${jedis.version}</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <!-- 配置nexus远程仓库 -->
+        <repository>
+            <id>releases</id>
+            <name>Private Repository</name>
+            <url>http://yyzc.ks365.org:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>User Project Release</name>
+            <url>http://yyzc.ks365.org:8081/repository/maven-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <name>User Project SNAPSHOTS</name>
+            <url>http://yyzc.ks365.org:8081/repository/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

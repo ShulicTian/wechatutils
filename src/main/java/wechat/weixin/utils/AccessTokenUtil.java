@@ -8,7 +8,7 @@ import wechat.common.utils.HttpsRequestUtil;
 import wechat.common.utils.RedisUtil;
 import wechat.qiye.common.aes.AesException;
 import wechat.qiye.common.entity.AccessTokenEntity;
-import wechat.weixin.common.entity.WeiXinParamsEntity;
+import wechat.weixin.entity.WeiXinParamsEntity;
 
 /**
  * 微信AccessToken工具类
@@ -38,7 +38,7 @@ public class AccessTokenUtil extends RedisSwitch {
     private static String getClientCredentialAccessToken(WeiXinParamsEntity weiXinParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken();
+            accessToken = getCacheAccessToken(weiXinParamsEntity.getAppId());
         } catch (Exception e) {
             logger.error("【WeiXin】{} {}", "缓存获取异常", e);
             e.printStackTrace();
@@ -63,9 +63,9 @@ public class AccessTokenUtil extends RedisSwitch {
                 replace("SECRET", weiXinParamsEntity.getSecret());
         String result = HttpsRequestUtil.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
-        if (AesException.OK == accessTokenEntity.getErrcode()) {
+        if (accessTokenEntity.getErrcode() == null || accessTokenEntity.getErrcode() == AesException.OK) {
             logger.info("【WeiXin】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(accessTokenEntity);
+            cacheAccessToken(accessTokenEntity, weiXinParamsEntity.getAppId());
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【WeiXin】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -77,11 +77,11 @@ public class AccessTokenUtil extends RedisSwitch {
      *
      * @param accessTokenEntity
      */
-    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity) {
+    private static void cacheAccessToken(AccessTokenEntity accessTokenEntity, String appId) {
         if (openRedisCache) {
-            RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+            RedisUtil.putStringWithExpire(CacheUtil.ACCESS_TOKEN_CACHE + "_" + appId, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
         } else {
-            CacheUtil.put(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE + "_" + appId, accessTokenEntity.getAccessToken());
         }
         logger.info("【WeiXin】{} [{}] {}s后失效", "缓存存入AccessToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -91,12 +91,12 @@ public class AccessTokenUtil extends RedisSwitch {
      *
      * @return
      */
-    private static String getCacheAccessToken() {
+    private static String getCacheAccessToken(String appId) {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE, jedisPool);
+            accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE + "_" + appId, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX, CacheUtil.ACCESS_TOKEN_CACHE + "_" + appId);
         }
         if (accessToken != null) {
             logger.info("【WeiXin】{} [{}]", "缓存获取AccessToken", accessToken);

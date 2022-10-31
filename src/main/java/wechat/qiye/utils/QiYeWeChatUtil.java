@@ -321,38 +321,36 @@ public class QiYeWeChatUtil {
      * @return
      */
     public boolean deletePersonnelByNotStatus(String departmentId, Integer status) {
-        List<DepartmentEntity> departmentEntities = departmentCtrl.getIdList("1");
-        if (departmentEntities != null && departmentEntities.size() > 0) {
-            departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
-            Set<String> userIds = new HashSet<>();
-            departmentEntities.forEach(department -> {
-                List<PersonnelEntity> personnelEntities = getPersonnelListByNotStatus(department.getId(), status);
-                userIds.addAll(personnelEntities.stream().map(PersonnelEntity::getUserId).collect(Collectors.toList()));
-            });
-            List<String> userIdList = new ArrayList<>(userIds);
-            if (userIdList.size() > 0) {
-                if (userIdList.size() > 200) {
-                    int startIndex = 0;
-                    int endIndex = 199;
-                    while (userIdList.size() >= endIndex) {
-                        batchDeletePersonnel(userIdList.subList(startIndex, endIndex).toArray(new String[0]));
-                        if (endIndex == userIdList.size()) {
-                            endIndex++;
-                        } else if (userIdList.size() > (endIndex + 199)) {
-                            startIndex += 199;
-                            endIndex += 199;
-                        } else {
-                            startIndex = endIndex;
-                            endIndex = userIdList.size();
-                        }
+        List<DepartmentEntity> departmentEntities = departmentCtrl.getIdList(departmentId);
+        departmentEntities.add(new DepartmentEntity(departmentId, null, null));
+        departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
+        Set<String> userIds = new HashSet<>();
+        departmentEntities.forEach(department -> {
+            List<PersonnelEntity> personnelEntities = getPersonnelListByNotStatus(department.getId(), status);
+            userIds.addAll(personnelEntities.stream().map(PersonnelEntity::getUserId).collect(Collectors.toList()));
+        });
+        List<String> userIdList = new ArrayList<>(userIds);
+        if (userIdList.size() > 0) {
+            if (userIdList.size() > 200) {
+                int startIndex = 0;
+                int endIndex = 199;
+                while (userIdList.size() >= endIndex) {
+                    batchDeletePersonnel(userIdList.subList(startIndex, endIndex).toArray(new String[0]));
+                    if (endIndex == userIdList.size()) {
+                        endIndex++;
+                    } else if (userIdList.size() > (endIndex + 199)) {
+                        startIndex += 199;
+                        endIndex += 199;
+                    } else {
+                        startIndex = endIndex;
+                        endIndex = userIdList.size();
                     }
-                } else {
-                    batchDeletePersonnel(userIds.toArray(new String[]{}));
                 }
+            } else {
+                batchDeletePersonnel(userIds.toArray(new String[]{}));
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
     /**

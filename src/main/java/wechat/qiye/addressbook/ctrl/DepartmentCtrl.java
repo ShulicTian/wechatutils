@@ -3,12 +3,12 @@ package wechat.qiye.addressbook.ctrl;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import wechat.common.constant.BaseUrlConstant;
+import wechat.common.entity.ReceiveEntity;
 import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.common.constant.QiYeUriEnum;
 import wechat.qiye.common.entity.QiYeParamsEntity;
-import wechat.common.entity.ReceiveEntity;
 import wechat.qiye.common.interfaces.BaseCtrl;
 import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.utils.AccessTokenUtil;
@@ -149,7 +149,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
-            return getList(departmentId);
+            return getIdList(departmentId);
         }
         if (isSuccess(errorCode, "获取部门ID列表")) {
             return list;

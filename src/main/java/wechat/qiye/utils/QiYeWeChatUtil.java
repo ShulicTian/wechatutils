@@ -1,5 +1,7 @@
 package wechat.qiye.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
  * @author tinaslc
  */
 public class QiYeWeChatUtil {
-
+    protected Logger logger = LogManager.getLogger(QiYeWeChatUtil.class);
     private PersonnelCtrl personnelCtrl;
     private DepartmentCtrl departmentCtrl;
     private LoginAuthCtrl loginAuthCtrl;
@@ -318,17 +320,20 @@ public class QiYeWeChatUtil {
     /**
      * 根据人员状态彻底删除人员
      *
+     * @param departmentId
+     * @param status
      * @return
      */
     public boolean deletePersonnelByNotStatus(String departmentId, Integer status) {
-        List<DepartmentEntity> departmentEntities = departmentCtrl.getIdList(departmentId);
+        List<DepartmentEntity> departmentEntities = new ArrayList<>(departmentCtrl.getIdList(departmentId));
         departmentEntities.add(new DepartmentEntity(departmentId, null, null));
-        departmentEntities.sort(Comparator.comparing(DepartmentEntity::getOrder));
+        logger.debug("【查询部门列表成功】");
         Set<String> userIds = new HashSet<>();
         departmentEntities.forEach(department -> {
             List<PersonnelEntity> personnelEntities = getPersonnelListByNotStatus(department.getId(), status);
             userIds.addAll(personnelEntities.stream().map(PersonnelEntity::getUserId).collect(Collectors.toList()));
         });
+        logger.debug("【查询人员列表成功】");
         List<String> userIdList = new ArrayList<>(userIds);
         if (userIdList.size() > 0) {
             if (userIdList.size() > 200) {
@@ -349,6 +354,7 @@ public class QiYeWeChatUtil {
             } else {
                 batchDeletePersonnel(userIds.toArray(new String[]{}));
             }
+            logger.debug("【删除未关注人员成功】");
         }
         return true;
     }

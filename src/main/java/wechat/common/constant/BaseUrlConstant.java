@@ -102,4 +102,9 @@ public class BaseUrlConstant {
      */
     public static String MINI_GET_MOBILE = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN";
 
+    /**
+     * 上报用户数据接口（POST）
+     */
+    public static String SUBMIT_USER_DATA = "https://api.weixin.qq.com/wxa/set_user_storage?access_token=ACCESS_TOKEN&signature=SIGNATURE&openid=OPENID&sig_method=SIG_METHOD";
+
 }

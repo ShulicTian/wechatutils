@@ -38,7 +38,7 @@ public abstract class BaseCtrlAbs {
             logger.info("【QiYeWeChat】{}{} ", message, "成功");
             return true;
         }
-        logger.info("【QiYeWeChat】{}{}[{}]", message, "失败", code);
+        logger.error("【QiYeWeChat】{}{}[{}]", message, "失败", code);
         return false;
     }
 

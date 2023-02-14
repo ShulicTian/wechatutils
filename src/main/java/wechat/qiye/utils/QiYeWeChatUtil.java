@@ -165,6 +165,17 @@ public class QiYeWeChatUtil {
     }
 
     /**
+     * 判断人员是否存在
+     *
+     * @param userId
+     * @return
+     */
+    public Boolean existsByUserId(String userId) {
+        List<PersonnelSingleEntity> list = getPersonnelIdList();
+        return list != null && list.stream().anyMatch(obj -> obj.getUserId().equals(userId));
+    }
+
+    /**
      * 获取部门下人员列表
      *
      * @param departmentId

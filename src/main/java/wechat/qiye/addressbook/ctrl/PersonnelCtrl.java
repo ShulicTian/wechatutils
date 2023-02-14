@@ -9,6 +9,7 @@ import wechat.common.utils.GsonUtil;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.addressbook.adapter.PersonnelTypeAdapter;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.PersonnelSingleEntity;
 import wechat.qiye.addressbook.entity.QrcodeEntity;
 import wechat.qiye.common.constant.QiYeUriEnum;
 import wechat.qiye.common.entity.QiYeParamsEntity;
@@ -164,6 +165,29 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
         // 第一次请求如果token失效会重新获取token再请求一次
         if (isTokenLose(errorCode)) {
             return getDepartmentPersonnelList(departmentId);
+        }
+        if (isSuccess(errorCode, "获取人员列表")) {
+            return personnelList;
+        }
+        return null;
+    }
+
+    /**
+     * 获取部门下人员ID
+     *
+     * @return
+     */
+    public List<PersonnelSingleEntity> getPersonnelIdList() {
+        String url = BaseUrlConstant.QIYE_DEPARTMENT_PERSONNEL_ID.
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
+        String result = HttpsRequestUtil.httpsGet(url);
+        JsonObject jsonObject = GsonUtil.parseJsonObject(result);
+        JsonArray userlist = jsonObject.getAsJsonArray("dept_user");
+        List<PersonnelSingleEntity> personnelList = Arrays.asList(gson.fromJson(userlist, PersonnelSingleEntity[].class));
+        Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
+        // 第一次请求如果token失效会重新获取token再请求一次
+        if (isTokenLose(errorCode)) {
+            return getPersonnelIdList();
         }
         if (isSuccess(errorCode, "获取人员列表")) {
             return personnelList;

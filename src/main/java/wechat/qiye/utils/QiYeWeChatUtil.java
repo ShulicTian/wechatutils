@@ -6,6 +6,7 @@ import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
+import wechat.qiye.addressbook.entity.PersonnelSingleEntity;
 import wechat.qiye.addressbook.entity.QrcodeEntity;
 import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.common.aes.SHA1;
@@ -138,6 +139,7 @@ public class QiYeWeChatUtil {
      * @param personnelId
      * @return
      */
+    @Deprecated
     public PersonnelEntity getPersonnel(String personnelId) {
         return personnelCtrl.get(personnelId);
     }
@@ -148,8 +150,18 @@ public class QiYeWeChatUtil {
      * @param departmentId
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getPersonnelList(String departmentId) {
         return personnelCtrl.getDepartmentPersonnelList(departmentId);
+    }
+
+    /**
+     * 获取部门下人员ID列表
+     *
+     * @return
+     */
+    public List<PersonnelSingleEntity> getPersonnelIdList() {
+        return personnelCtrl.getPersonnelIdList();
     }
 
     /**
@@ -159,6 +171,7 @@ public class QiYeWeChatUtil {
      * @param status
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, Integer status) {
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
@@ -170,6 +183,7 @@ public class QiYeWeChatUtil {
      * @param status
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, Integer status) {
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
@@ -180,6 +194,7 @@ public class QiYeWeChatUtil {
      * @param departmentId
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getPersonnelDescList(String departmentId) {
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId);
     }

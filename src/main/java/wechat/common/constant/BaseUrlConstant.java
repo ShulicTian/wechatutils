@@ -28,6 +28,11 @@ public class BaseUrlConstant {
     public static String QIYE_DEPARTMENT_PERSONNEL = "https://qyapi.weixin.qq.com/cgi-bin/user/METHOD?access_token=ACCESS_TOKEN&department_id=DEPARTMENT_ID";
 
     /**
+     * 企业微信获取部门人员ID的URL（POST）
+     */
+    public static String QIYE_DEPARTMENT_PERSONNEL_ID = "https://qyapi.weixin.qq.com/cgi-bin/user/list_id?access_token=ACCESS_TOKEN";
+
+    /**
      * 企业微信创建更新部门的URL（POST）
      */
     public static String QIYE_CU_DEPARTMENT = "https://qyapi.weixin.qq.com/cgi-bin/department/METHOD?access_token=ACCESS_TOKEN";

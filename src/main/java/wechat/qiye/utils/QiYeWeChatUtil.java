@@ -230,8 +230,19 @@ public class QiYeWeChatUtil {
      * @param departmentId
      * @return
      */
+    @Deprecated
     public List<DepartmentEntity> getDepartmentList(String departmentId) {
         return departmentCtrl.getList(departmentId);
+    }
+
+    /**
+     * 获取部分及子部门ID
+     *
+     * @param departmentId
+     * @return
+     */
+    public List<DepartmentEntity> getDepartmentIdList(String departmentId) {
+        return departmentCtrl.getIdList(departmentId);
     }
 
     /**
@@ -240,8 +251,20 @@ public class QiYeWeChatUtil {
      * @param departmentId
      * @return
      */
+    @Deprecated
     public DepartmentEntity getDepartment(String departmentId) {
         return departmentCtrl.get(departmentId);
+    }
+
+    /**
+     * 是否存在部门
+     *
+     * @param departmentId
+     * @return
+     */
+    public Boolean existsByDepartmentId(String departmentId) {
+        List<DepartmentEntity> list = getDepartmentIdList(departmentId);
+        return list != null && list.size() > 0;
     }
 
     /**

@@ -27,7 +27,7 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @return
      */
     public String getAuthUrl(String redirectUrl, String state) {
-        String url = BaseUrlConstant.QIYE_OAUTH2.replace("CORPID", qiYeParamsEntity.getCorpId()).
+        String url = BaseUrlConstant.WX_OAUTH2_BASE.replace("CORPID", qiYeParamsEntity.getCorpId()).
                 replace("REDIRECT_URI", redirectUrl).
                 replace("STATE", state);
         return url;

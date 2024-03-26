@@ -13,6 +13,10 @@ import wechat.common.cache.CommonCacheManager;
 public class CacheUtil {
     public static final String CACHE_QI_YE = "cache_qi_ye";
     public static final String CACHE_WX = "cache_wx";
+    public static final String CACHE_WX_WEB = "cache_wx_web";
+    public static final String CACHE_WX_WEB_REFRESH = "cache_wx_web_refresh";
+    public static final String WEB_ACCESS_TOKEN_CACHE = "WebAccessTokenCache";
+    public static final String WEB_REFRESH_TOKEN_CACHE = "WebRefreshTokenCache";
     public static final String ACCESS_TOKEN_CACHE = "AccessTokenCache";
     public static final String ADDRESS_BOOK_ACCESS_TOKEN_CACHE = "AddressBookAccessTokenCache";
     public static final String JSAPI_TICKET_CACHE = "JsApiTicket";

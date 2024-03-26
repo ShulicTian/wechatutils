@@ -43,11 +43,6 @@ public class BaseUrlConstant {
     public static String QIYE_RD_DEPARTMENT = "https://qyapi.weixin.qq.com/cgi-bin/department/METHOD?access_token=ACCESS_TOKEN&id=#ID";
 
     /**
-     * 企业微信网页链接登录认证的URL（LINK）
-     */
-    public static String WX_OAUTH2_BASE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-
-    /**
      * 企业微信二维码登录认证的URL（LINK）
      */
     public static String QIYE_QRCODE_OAUTH = "https://open.work.weixin.qq.com/wwopen/sso/qrConnect?appid=CORPID&agentid=AGENTID&redirect_uri=REDIRECT_URI&state=STATE";
@@ -111,5 +106,30 @@ public class BaseUrlConstant {
      * 上报用户数据接口（POST）
      */
     public static String SUBMIT_USER_DATA = "https://api.weixin.qq.com/wxa/set_user_storage?access_token=ACCESS_TOKEN&signature=SIGNATURE&openid=OPENID&sig_method=SIG_METHOD";
+
+    /**
+     * 微信网页链接登录认证的URL（LINK）
+     */
+    public static String WX_OAUTH2 = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+
+    /**
+     * 获取Web版Token
+     */
+    public static String WX_WEB_ACCESS_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+
+    /**
+     * 刷新Web版Token
+     */
+    public static String WX_WEB_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
+
+    /**
+     * 获取Web版用户信息
+     */
+    public static String WX_WEB_USERINFO = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+
+    /**
+     * 验证Web版Token是否有效
+     */
+    public static String WX_WEB_VALID_TOKEN = "https://api.weixin.qq.com/sns/auth?access_token=ACCESS_TOKEN&openid=OPENID";
 
 }

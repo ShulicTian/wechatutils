@@ -26,10 +26,11 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @param state
      * @return
      */
-    public String getAuthUrl(String redirectUrl, String state) {
-        String url = BaseUrlConstant.WX_OAUTH2_BASE.replace("CORPID", qiYeParamsEntity.getCorpId()).
+    public String getAuthUrl(String redirectUrl, String state, String scope) {
+        String url = BaseUrlConstant.WX_OAUTH2.replace("CORPID", qiYeParamsEntity.getCorpId()).
                 replace("REDIRECT_URI", redirectUrl).
-                replace("STATE", state);
+                replace("STATE", state).
+                replace("SCOPE", scope);
         return url;
     }
 
@@ -54,14 +55,14 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @param code
      * @return
      */
-    public String getUserIdByCode(String code) {
+    public String getQiYeUserIdByCode(String code) {
         String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
                 replace("CODE", code);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         if (isTokenLose(errorCode)) {
-            return getUserIdByCode(code);
+            return getQiYeUserIdByCode(code);
         }
         if (isSuccess(errorCode, "获取用户信息")) {
             String id = jsonObject.get("UserId").getAsString();

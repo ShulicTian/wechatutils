@@ -14,6 +14,7 @@ public class WebParamsEntity extends BaseParams {
     private String appId;
     private String secret;
     private String code;
+    private String openId;
 
 
     public WebParamsEntity(Properties properties) {
@@ -47,5 +48,13 @@ public class WebParamsEntity extends BaseParams {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

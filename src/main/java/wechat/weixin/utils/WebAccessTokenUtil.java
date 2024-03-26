@@ -39,14 +39,14 @@ public class WebAccessTokenUtil extends RedisSwitch {
     private static String getAuthorizationCodeAssessToken(WebParamsEntity webParamsEntity) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken(webParamsEntity.getAppId());
+            accessToken = getCacheAccessToken(webParamsEntity.getAppId(), webParamsEntity.getOpenId());
         } catch (Exception e) {
             logger.error("【WeiXinWeb】{} {}", "缓存获取异常", e);
             e.printStackTrace();
         }
         //如果缓存没拿到就重新请求
         if (StringUtils.isBlank(accessToken)) {
-            String refreshAccessToken = getCacheRefreshToken(webParamsEntity.getAppId());
+            String refreshAccessToken = getCacheRefreshToken(webParamsEntity.getAppId(), webParamsEntity.getOpenId());
             if (StringUtils.isNotBlank(refreshAccessToken)) {
                 accessToken = refreshAccessToken(webParamsEntity.getAppId(), refreshAccessToken);
             } else {
@@ -73,7 +73,7 @@ public class WebAccessTokenUtil extends RedisSwitch {
         if (accessTokenEntity.getErrcode() == null || accessTokenEntity.getErrcode() == AesException.OK) {
             logger.info("【WeiXinWeb】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
             cacheAccessToken(accessTokenEntity, webParamsEntity.getAppId());
-            cacheRefreshToken(accessTokenEntity.getRefreshToken(), webParamsEntity.getAppId());
+            cacheRefreshToken(accessTokenEntity.getRefreshToken(), webParamsEntity.getAppId(), accessTokenEntity.getOpenId());
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【WeiXinWeb】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -102,9 +102,9 @@ public class WebAccessTokenUtil extends RedisSwitch {
      */
     private static void cacheAccessToken(WebAccessTokenEntity accessTokenEntity, String appId) {
         if (openRedisCache) {
-            RedisUtil.putStringWithExpire(CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId, accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
+            RedisUtil.putStringWithExpire(CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId + "_" + accessTokenEntity.getOpenId(), accessTokenEntity.getAccessToken(), jedisPool, accessTokenEntity.getExpiresIn());
         } else {
-            CacheUtil.put(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId, accessTokenEntity.getAccessToken());
+            CacheUtil.put(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId + "_" + accessTokenEntity.getOpenId(), accessTokenEntity.getAccessToken());
         }
         logger.info("【WeiXinWeb】{} [{}] {}s后失效", "缓存存入AccessToken、RefreshToken", accessTokenEntity.getAccessToken(), accessTokenEntity.getExpiresIn());
     }
@@ -115,11 +115,11 @@ public class WebAccessTokenUtil extends RedisSwitch {
      * @param refreshToken
      * @param appId
      */
-    private static void cacheRefreshToken(String refreshToken, String appId) {
+    private static void cacheRefreshToken(String refreshToken, String appId, String openId) {
         if (openRedisCache) {
-            RedisUtil.putStringWithExpire(CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId, refreshToken, jedisPool, 30 * 24 * 60 * 60);
+            RedisUtil.putStringWithExpire(CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId + "_" + openId, refreshToken, jedisPool, 30 * 24 * 60 * 60);
         } else {
-            CacheUtil.put(CacheUtil.CACHE_WX_WEB_REFRESH, CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId, refreshToken);
+            CacheUtil.put(CacheUtil.CACHE_WX_WEB_REFRESH, CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId + "_" + openId, refreshToken);
         }
         logger.info("【WeiXinWeb】{} [{}]30天后失效", "缓存存入RefreshToken", refreshToken);
     }
@@ -129,12 +129,12 @@ public class WebAccessTokenUtil extends RedisSwitch {
      *
      * @return
      */
-    private static String getCacheAccessToken(String appId) {
+    private static String getCacheAccessToken(String appId, String openId) {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId, jedisPool);
+            accessToken = RedisUtil.getString(CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId + "_" + openId, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_ACCESS_TOKEN_CACHE + "_" + appId + "_" + openId);
         }
         if (accessToken != null) {
             logger.info("【WeiXinWeb】{} [{}]", "缓存获取AccessToken", accessToken);
@@ -149,12 +149,12 @@ public class WebAccessTokenUtil extends RedisSwitch {
      *
      * @return
      */
-    private static String getCacheRefreshToken(String appId) {
+    private static String getCacheRefreshToken(String appId, String openId) {
         String accessToken = "";
         if (openRedisCache) {
-            accessToken = RedisUtil.getString(CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId, jedisPool);
+            accessToken = RedisUtil.getString(CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId + "_" + openId, jedisPool);
         } else {
-            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId);
+            accessToken = (String) CacheUtil.get(CacheUtil.CACHE_WX_WEB, CacheUtil.WEB_REFRESH_TOKEN_CACHE + "_" + appId + "_" + openId);
         }
         if (accessToken != null) {
             logger.info("【WeiXinWeb】{} [{}]", "缓存获取RefreshToken", accessToken);

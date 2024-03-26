@@ -32,13 +32,13 @@ public class WebAccessTokenEntity extends ReceiveEntity {
      * 用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
      */
     @SerializedName("openid")
-    private int openId;
+    private String openId;
 
     /**
      * 用户统一标识（针对一个微信开放平台账号下的应用，同一用户的 unionid 是唯一的），只有当scope为"snsapi_userinfo"时返回
      */
     @SerializedName("unionid")
-    private int unionId;
+    private String unionId;
 
     /**
      * 是否为快照页模式虚拟账号，只有当用户是快照页模式虚拟账号时返回，值为1
@@ -70,19 +70,19 @@ public class WebAccessTokenEntity extends ReceiveEntity {
         this.refreshToken = refreshToken;
     }
 
-    public int getOpenId() {
+    public String getOpenId() {
         return openId;
     }
 
-    public void setOpenId(int openId) {
+    public void setOpenId(String openId) {
         this.openId = openId;
     }
 
-    public int getUnionId() {
+    public String getUnionId() {
         return unionId;
     }
 
-    public void setUnionId(int unionId) {
+    public void setUnionId(String unionId) {
         this.unionId = unionId;
     }
 

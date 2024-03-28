@@ -7,6 +7,7 @@ import wechat.common.entity.ReceiveEntity;
 import wechat.common.utils.HttpsRequestUtil;
 import wechat.qiye.common.aes.AesException;
 import wechat.weixin.entity.UserInfoResponseEntity;
+import wechat.weixin.entity.WebAccessTokenEntity;
 import wechat.weixin.entity.WebParamsEntity;
 
 import java.util.Properties;
@@ -17,6 +18,10 @@ public class WebUtils extends RedisSwitch {
 
     public static void loadConfig(Properties properties) {
         commonParams = new WebParamsEntity(properties);
+    }
+
+    public static WebAccessTokenEntity getWebAccessTokenEntity(String code) {
+        return WebAccessTokenUtil.requestAccessToken(new WebParamsEntity(commonParams.getAppId(), commonParams.getSecret(), code));
     }
 
     public static UserInfoResponseEntity getUserInfo(String openId) {

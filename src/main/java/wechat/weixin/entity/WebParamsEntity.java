@@ -18,6 +18,11 @@ public class WebParamsEntity extends BaseParams {
     private String code;
     private String openId;
 
+    public WebParamsEntity(String appId, String secret, String code) {
+        this.appId = appId;
+        this.secret = secret;
+        this.code = code;
+    }
 
     public WebParamsEntity(Properties properties) {
         this.appId = properties.getProperty("webAppId");

@@ -2,6 +2,8 @@ package wechat.weixin.entity;
 
 import wechat.common.entity.BaseParams;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -18,12 +20,38 @@ public class WebParamsEntity extends BaseParams {
 
 
     public WebParamsEntity(Properties properties) {
-        this.appId = properties.getProperty("appId");
-        this.secret = properties.getProperty("appSecret");
+        this.appId = properties.getProperty("webAppId");
+        this.secret = properties.getProperty("webSecret");
         this.isOpenRedisCache = Boolean.parseBoolean(properties.getProperty("isOpenRedisCache"));
         if (this.isOpenRedisCache) {
             this.initRedisConfig(properties);
         }
+    }
+
+    /**
+     * 加载配置文件方式
+     */
+    public static synchronized WebParamsEntity loadProps(InputStream inputStream) {
+        WebParamsEntity entity = null;
+        Properties props = new Properties();
+        InputStream in = inputStream;
+        try {
+            props.load(in);
+            if (null != props) {
+                entity = new WebParamsEntity(props);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != in) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return entity;
     }
 
     public String getAppId() {

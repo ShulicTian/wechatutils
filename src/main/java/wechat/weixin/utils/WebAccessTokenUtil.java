@@ -47,10 +47,14 @@ public class WebAccessTokenUtil extends RedisSwitch {
         //如果缓存没拿到就重新请求
         if (StringUtils.isBlank(accessToken)) {
             String refreshAccessToken = getCacheRefreshToken(webParamsEntity.getAppId(), webParamsEntity.getOpenId());
+            WebAccessTokenEntity entity;
             if (StringUtils.isNotBlank(refreshAccessToken)) {
-                accessToken = refreshAccessToken(webParamsEntity.getAppId(), refreshAccessToken);
+                entity = refreshAccessToken(webParamsEntity.getAppId(), refreshAccessToken);
             } else {
-                accessToken = requestAccessToken(webParamsEntity);
+                entity = requestAccessToken(webParamsEntity);
+            }
+            if (entity != null) {
+                accessToken = entity.getAccessToken();
             }
         }
         logger.info("【WeiXinWeb】{} [{}]", "获取微信AccessToken", accessToken);
@@ -63,7 +67,7 @@ public class WebAccessTokenUtil extends RedisSwitch {
      * @param webParamsEntity
      * @return
      */
-    public static String requestAccessToken(WebParamsEntity webParamsEntity) {
+    public static WebAccessTokenEntity requestAccessToken(WebParamsEntity webParamsEntity) {
         String url = BaseUrlConstant.WX_WEB_ACCESS_TOKEN.
                 replace("APPID", webParamsEntity.getAppId()).
                 replace("SECRET", webParamsEntity.getSecret()).
@@ -74,13 +78,13 @@ public class WebAccessTokenUtil extends RedisSwitch {
             logger.info("【WeiXinWeb】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
             cacheAccessToken(accessTokenEntity, webParamsEntity.getAppId());
             cacheRefreshToken(accessTokenEntity.getRefreshToken(), webParamsEntity.getAppId(), accessTokenEntity.getOpenId());
-            return accessTokenEntity.getAccessToken();
+            return accessTokenEntity;
         }
         logger.error("【WeiXinWeb】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
         return null;
     }
 
-    public static String refreshAccessToken(String appId, String refreshToken) {
+    public static WebAccessTokenEntity refreshAccessToken(String appId, String refreshToken) {
         String url = BaseUrlConstant.WX_WEB_REFRESH_TOKEN.
                 replace("APPID", appId).
                 replace("REFRESH_TOKEN", refreshToken);
@@ -89,7 +93,7 @@ public class WebAccessTokenUtil extends RedisSwitch {
         if (accessTokenEntity.getErrcode() == null || accessTokenEntity.getErrcode() == AesException.OK) {
             logger.info("【WeiXinWeb】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
             cacheAccessToken(accessTokenEntity, appId);
-            return accessTokenEntity.getAccessToken();
+            return accessTokenEntity;
         }
         logger.error("【WeiXinWeb】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
         return null;

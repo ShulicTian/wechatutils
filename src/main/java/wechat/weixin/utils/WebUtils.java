@@ -14,17 +14,21 @@ import java.util.Properties;
 
 public class WebUtils extends RedisSwitch {
 
-    private static WebParamsEntity commonParams = null;
+    private WebParamsEntity commonParams = null;
 
-    public static void loadConfig(Properties properties) {
-        commonParams = new WebParamsEntity(properties);
+    public WebUtils(WebParamsEntity commonParams) {
+        this.commonParams = commonParams;
     }
 
-    public static WebAccessTokenEntity getWebAccessTokenEntity(String code) {
+    public static WebUtils loadConfig(Properties properties) {
+        return new WebUtils(new WebParamsEntity(properties));
+    }
+
+    public WebAccessTokenEntity getWebAccessTokenEntity(String code) {
         return WebAccessTokenUtil.requestAccessToken(new WebParamsEntity(commonParams.getAppId(), commonParams.getSecret(), code));
     }
 
-    public static UserInfoResponseEntity getUserInfo(String openId) {
+    public UserInfoResponseEntity getUserInfo(String openId) {
         String url = BaseUrlConstant.WX_WEB_USERINFO.replace("ACCESS_TOKEN", WebAccessTokenUtil.getAccessToken(commonParams)).replace("OPENID", openId);
         String result = HttpsRequestUtil.httpsGet(url);
         UserInfoResponseEntity entity = new Gson().fromJson(result, UserInfoResponseEntity.class);
@@ -36,7 +40,7 @@ public class WebUtils extends RedisSwitch {
         return null;
     }
 
-    public static ReceiveEntity validToken(String openId) {
+    public ReceiveEntity validToken(String openId) {
         String url = BaseUrlConstant.WX_WEB_VALID_TOKEN.replace("ACCESS_TOKEN", WebAccessTokenUtil.getAccessToken(commonParams)).replace("OPENID", openId);
         String result = HttpsRequestUtil.httpsGet(url);
         ReceiveEntity entity = new Gson().fromJson(result, ReceiveEntity.class);

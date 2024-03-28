@@ -6,7 +6,7 @@
 
     <groupId>wechat-utils</groupId>
     <artifactId>wechat-utils</artifactId>
-    <version>3.7.5</version>
+    <version>3.7.6</version>
     <build>
         <plugins>
             <plugin>

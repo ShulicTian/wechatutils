@@ -54,21 +54,21 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @param code
      * @return
      */
-    public String getQiYeUserIdByCode(String code) {
+    public JsonObject getQiYeUserInfoByCode(String code) {
         String url = BaseUrlConstant.QIYE_GETUSERINFO.replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
                 replace("CODE", code);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         if (isTokenLose(errorCode)) {
-            return getQiYeUserIdByCode(code);
+            return getQiYeUserInfoByCode(code);
         }
         if (isSuccess(errorCode, "获取用户信息")) {
             String id = jsonObject.get("UserId").getAsString();
             if (id == null) {
                 id = jsonObject.get("UserId").getAsString();
             }
-            return id;
+            return jsonObject;
         }
         return null;
     }

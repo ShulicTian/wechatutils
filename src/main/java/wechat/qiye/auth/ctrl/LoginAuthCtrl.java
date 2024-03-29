@@ -64,10 +64,6 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
             return getQiYeUserInfoByCode(code);
         }
         if (isSuccess(errorCode, "获取用户信息")) {
-            String id = jsonObject.get("UserId").getAsString();
-            if (id == null) {
-                id = jsonObject.get("UserId").getAsString();
-            }
             return jsonObject;
         }
         return null;

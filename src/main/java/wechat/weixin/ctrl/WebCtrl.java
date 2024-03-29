@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class WebCtrl extends RedisSwitch {
 
-    private WebParamsEntity commonParams = null;
+    private final WebParamsEntity commonParams;
 
     public WebCtrl(WebParamsEntity commonParams) {
         this.commonParams = commonParams;

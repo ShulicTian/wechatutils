@@ -1,8 +1,6 @@
 package wechat.mini.ctrl;
 
 import com.google.gson.Gson;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import wechat.common.cache.RedisSwitch;
 import wechat.common.constant.BaseUrlConstant;
 import wechat.common.entity.ReceiveEntity;
@@ -25,14 +23,14 @@ import java.util.Map;
  */
 public class MiniCtrl extends RedisSwitch {
 
-    private MiniParamsEntity paramsEntity;
+    private final MiniParamsEntity paramsEntity;
 
     public MiniCtrl(MiniParamsEntity entity) {
         this.paramsEntity = entity;
     }
 
-    public LoginResponseEntity login() {
-        String url = BaseUrlConstant.MINI_LOGIN.replace("APPID", paramsEntity.getAppId()).replace("SECRET", paramsEntity.getSecret()).replace("JSCODE", paramsEntity.getJsCode());
+    public LoginResponseEntity login(String code) {
+        String url = BaseUrlConstant.MINI_LOGIN.replace("APPID", paramsEntity.getAppId()).replace("SECRET", paramsEntity.getSecret()).replace("JSCODE", code);
         String result = HttpsRequestUtil.httpsGet(url);
         LoginResponseEntity loginResponseEntity = new Gson().fromJson(result, LoginResponseEntity.class);
         if (loginResponseEntity.getErrcode() == null || loginResponseEntity.getErrcode() == AesException.OK) {
@@ -43,10 +41,10 @@ public class MiniCtrl extends RedisSwitch {
         return null;
     }
 
-    public MobileResponseEntity getMobile(MiniParamsEntity entity) {
-        String url = BaseUrlConstant.MINI_GET_MOBILE.replace("ACCESS_TOKEN", wechat.mini.utils.AccessTokenUtil.getAccessToken(entity));
+    public MobileResponseEntity getMobile(String code) {
+        String url = BaseUrlConstant.MINI_GET_MOBILE.replace("ACCESS_TOKEN", wechat.mini.utils.AccessTokenUtil.getAccessToken(paramsEntity));
         Map<String, Object> map = new HashMap<>();
-        map.put("code", entity.getJsCode());
+        map.put("code", code);
         String result = HttpsRequestUtil.httpsPost(url, new Gson().toJson(map).getBytes(StandardCharsets.UTF_8));
         MobileResponseEntity mobileResponseEntity = new Gson().fromJson(result, MobileResponseEntity.class);
         if (mobileResponseEntity.getErrcode() == null || mobileResponseEntity.getErrcode() == AesException.OK) {

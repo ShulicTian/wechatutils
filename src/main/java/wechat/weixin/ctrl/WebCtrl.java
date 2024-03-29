@@ -48,4 +48,18 @@ public class WebCtrl extends RedisSwitch {
         logger.error("【MINI】获取用户信息失败 [{}] {}", entity.getErrcode(), entity.getErrmsg());
         return null;
     }
+
+    /**
+     * 拼接OAuth2 Url
+     *
+     * @param redirectUrl
+     * @param state
+     * @return
+     */
+    public String getAuthUrl(String redirectUrl, String state, String scope) {
+        return BaseUrlConstant.WX_OAUTH2.replace("APPID", commonParams.getAppId()).
+                replace("REDIRECT_URI", redirectUrl).
+                replace("STATE", state).
+                replace("SCOPE", scope);
+    }
 }

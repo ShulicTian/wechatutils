@@ -112,6 +112,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      *
      * @param departmentId
      */
+    @Deprecated
     public List<DepartmentEntity> getList(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
@@ -155,5 +156,16 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
             return list;
         }
         return null;
+    }
+
+    /**
+     * 是否存在部门
+     *
+     * @param departmentId
+     * @return
+     */
+    public Boolean existsByDepartmentId(String departmentId) {
+        List<DepartmentEntity> list = getIdList(departmentId);
+        return list != null && list.size() > 0;
     }
 }

@@ -1,117 +1,41 @@
-package wechat.qiye.utils;
+package wechat.qiye.common.ctrl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.addressbook.entity.PersonnelSingleEntity;
 import wechat.qiye.addressbook.entity.QrcodeEntity;
-import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.common.aes.SHA1;
 import wechat.qiye.common.entity.JsSdkConfigEntity;
 import wechat.qiye.common.entity.QiYeParamsEntity;
+import wechat.qiye.common.interfaces.BaseCtrlAbs;
 import wechat.qiye.message.ctrl.MessageCtrl;
 import wechat.qiye.message.entity.Message;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
+import wechat.qiye.utils.JsApiTicketUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 企业微信操作工具
- *
- * @author tinaslc
+ * @author tianslc
+ * @date 2024/3/29
  */
-@Deprecated
-public class QiYeWeChatUtil {
-    protected Logger logger = LogManager.getLogger(QiYeWeChatUtil.class);
-    private PersonnelCtrl personnelCtrl;
-    private DepartmentCtrl departmentCtrl;
-    private LoginAuthCtrl loginAuthCtrl;
-    private MessageCtrl messageCtrl;
-    private Map<String, Object> ctrlCache = new HashMap<String, Object>();
+public class QiYeCtrl extends BaseCtrlAbs {
 
-    /**
-     * 开启成员控制器
-     *
-     * @return
-     */
-    public void openPersonnelCtrl(QiYeParamsEntity qiYeParamsEntity) {
-        String key = qiYeParamsEntity.getAgentId();
-        if (!ctrlCache.containsKey(key)) {
-            this.personnelCtrl = new PersonnelCtrl(qiYeParamsEntity);
-            this.ctrlCache.put(key + "_personnelCtrl", this.personnelCtrl);
-        } else {
-            this.personnelCtrl = (PersonnelCtrl) ctrlCache.get(key);
-        }
-    }
+    private final DepartmentCtrl departmentCtrl;
 
-    /**
-     * 开启部门控制器
-     *
-     * @return
-     */
-    public void openDepartmentCtrl(QiYeParamsEntity qiYeParamsEntity) {
-        String key = qiYeParamsEntity.getAgentId();
-        if (!ctrlCache.containsKey(key)) {
-            this.departmentCtrl = new DepartmentCtrl(qiYeParamsEntity);
-            this.ctrlCache.put(key + "_departmentCtrl", this.departmentCtrl);
-        } else {
-            this.departmentCtrl = (DepartmentCtrl) ctrlCache.get(key);
-        }
-    }
+    private final PersonnelCtrl personnelCtrl;
 
-    /**
-     * 开启身份验证控制器
-     *
-     * @return
-     */
-    public void openLoginAuthCtrl(QiYeParamsEntity qiYeParamsEntity) {
-        String key = qiYeParamsEntity.getAgentId();
-        if (!ctrlCache.containsKey(key)) {
-            this.loginAuthCtrl = new LoginAuthCtrl(qiYeParamsEntity);
-            this.ctrlCache.put(key + "_loginAuthCtrl", this.loginAuthCtrl);
-        } else {
-            this.loginAuthCtrl = (LoginAuthCtrl) ctrlCache.get(key);
-        }
-    }
+    private final MessageCtrl messageCtrl;
 
-    /**
-     * 开启消息控制器
-     *
-     * @return
-     */
-    public void openMessageCtrl(QiYeParamsEntity qiYeParamsEntity) {
-        String key = qiYeParamsEntity.getAgentId();
-        if (!ctrlCache.containsKey(key)) {
-            this.messageCtrl = new MessageCtrl(qiYeParamsEntity);
-            this.ctrlCache.put(key + "_messageCtrl", this.messageCtrl);
-        } else {
-            this.messageCtrl = (MessageCtrl) ctrlCache.get(key);
-        }
-    }
-
-    /**
-     * 关闭单个应用控制器
-     *
-     * @return
-     */
-    public void closeCtrlByAgentId(String agentId) {
-        this.ctrlCache.remove(agentId + "_personnelCtrl");
-        this.ctrlCache.remove(agentId + "_departmentCtrl");
-        this.ctrlCache.remove(agentId + "_loginAuthCtrl");
-    }
-
-    /**
-     * 关闭所有应用控制器
-     *
-     * @return
-     */
-    public void closeAllCtrl() {
-        this.ctrlCache.clear();
+    public QiYeCtrl(QiYeParamsEntity qiYeParamsEntity) {
+        super(qiYeParamsEntity);
+        departmentCtrl = new DepartmentCtrl(qiYeParamsEntity);
+        personnelCtrl = new PersonnelCtrl(qiYeParamsEntity);
+        messageCtrl = new MessageCtrl(qiYeParamsEntity);
     }
 
     /**
@@ -460,5 +384,4 @@ public class QiYeWeChatUtil {
     public QrcodeEntity getQrCodeUrl(String sizeType) {
         return personnelCtrl.getQrcode(sizeType);
     }
-
 }

@@ -21,6 +21,7 @@ import wechat.qiye.utils.AccessTokenUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 成员控制器
@@ -241,5 +242,53 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
             return qrcodeEntity;
         }
         return null;
+    }
+
+
+    /**
+     * 判断人员是否存在
+     *
+     * @param userId
+     * @return
+     */
+    public Boolean existsByUserId(String userId) {
+        List<PersonnelSingleEntity> list = getPersonnelIdList();
+        return list != null && list.stream().anyMatch(obj -> obj.getUserId().equals(userId));
+    }
+
+
+    /**
+     * 获取部门下人员列表
+     *
+     * @param departmentId
+     * @param status
+     * @return
+     */
+    @Deprecated
+    public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, Integer status) {
+        return getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取部门下人员列表
+     *
+     * @param departmentId
+     * @param status
+     * @return
+     */
+    @Deprecated
+    public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, Integer status) {
+        return getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取部门下人员详情列表
+     *
+     * @param departmentId
+     * @return
+     */
+    @Deprecated
+    public List<PersonnelEntity> getPersonnelDescList(String departmentId) {
+        return getDepartmentPersonnelDescList(departmentId);
     }
 }

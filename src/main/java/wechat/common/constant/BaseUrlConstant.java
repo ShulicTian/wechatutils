@@ -110,7 +110,7 @@ public class BaseUrlConstant {
     /**
      * 微信网页链接登录认证的URL（LINK）
      */
-    public static String WX_OAUTH2 = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+    public static String WX_OAUTH2 = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 
     /**
      * 获取Web版Token

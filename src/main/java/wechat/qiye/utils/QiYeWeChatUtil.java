@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
  *
  * @author tinaslc
  */
+@Deprecated
 public class QiYeWeChatUtil {
     protected Logger logger = LogManager.getLogger(QiYeWeChatUtil.class);
     private PersonnelCtrl personnelCtrl;

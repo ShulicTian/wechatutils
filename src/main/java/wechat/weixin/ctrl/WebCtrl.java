@@ -1,4 +1,4 @@
-package wechat.weixin.utils;
+package wechat.weixin.ctrl;
 
 import com.google.gson.Gson;
 import wechat.common.cache.RedisSwitch;
@@ -9,19 +9,16 @@ import wechat.qiye.common.aes.AesException;
 import wechat.weixin.entity.UserInfoResponseEntity;
 import wechat.weixin.entity.WebAccessTokenEntity;
 import wechat.weixin.entity.WebParamsEntity;
+import wechat.weixin.utils.WebAccessTokenUtil;
 
 import java.util.Properties;
 
-public class WebUtils extends RedisSwitch {
+public class WebCtrl extends RedisSwitch {
 
     private WebParamsEntity commonParams = null;
 
-    public WebUtils(WebParamsEntity commonParams) {
+    public WebCtrl(WebParamsEntity commonParams) {
         this.commonParams = commonParams;
-    }
-
-    public static WebUtils loadConfig(Properties properties) {
-        return new WebUtils(new WebParamsEntity(properties));
     }
 
     public WebAccessTokenEntity getWebAccessTokenEntity(String code) {

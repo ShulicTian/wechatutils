@@ -20,21 +20,6 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
     }
 
     /**
-     * 拼接OAuth2 Url
-     *
-     * @param redirectUrl
-     * @param state
-     * @return
-     */
-    public String getAuthUrl(String redirectUrl, String state, String scope) {
-        String url = BaseUrlConstant.WX_OAUTH2.replace("CORPID", qiYeParamsEntity.getCorpId()).
-                replace("REDIRECT_URI", redirectUrl).
-                replace("STATE", state).
-                replace("SCOPE", scope);
-        return url;
-    }
-
-    /**
      * 拼接qrcode OAuth Url
      *
      * @param redirectUrl

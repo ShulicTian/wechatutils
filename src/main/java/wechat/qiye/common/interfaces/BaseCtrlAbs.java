@@ -25,6 +25,10 @@ public abstract class BaseCtrlAbs {
         this.qiYeParamsEntity = qiYeParamsEntity;
     }
 
+    public void changeOpenGlobalAddressBookSecret (boolean flag){
+        qiYeParamsEntity.setOpenGlobalAddressBookSecret(flag);
+    }
+
     /**
      * 是否成功
      *

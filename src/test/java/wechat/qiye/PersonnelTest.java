@@ -11,7 +11,6 @@ import java.util.List;
 
 public class PersonnelTest {
 
-    private static QiYeWeChatUtil qiYeWeChatUtil;
     private static Gson gson = new Gson();
 
     static {

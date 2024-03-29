@@ -7,7 +7,6 @@ import wechat.qiye.message.entity.ButtonEntity;
 import wechat.qiye.message.entity.MessageEntity;
 import wechat.qiye.message.entity.TaskCardMessage;
 import wechat.qiye.message.entity.TaskCardMessageStatus;
-import wechat.qiye.utils.QiYeWeChatUtil;
 
 public class MessageTest {
 

@@ -37,6 +37,12 @@ public class QiYeCtrl extends BaseCtrlAbs {
         personnelCtrl = new PersonnelCtrl(qiYeParamsEntity);
         messageCtrl = new MessageCtrl(qiYeParamsEntity);
     }
+    public void changeOpenGlobalAddressBookSecret (boolean flag){
+        super.changeOpenGlobalAddressBookSecret(flag);
+        departmentCtrl.changeOpenGlobalAddressBookSecret(flag);
+        personnelCtrl.changeOpenGlobalAddressBookSecret(flag);
+        messageCtrl.changeOpenGlobalAddressBookSecret(flag);
+    }
 
     /**
      * 创建人员
@@ -356,10 +362,9 @@ public class QiYeCtrl extends BaseCtrlAbs {
     /**
      * 获取jssdkconfig
      *
-     * @param qiYeParamsEntity
      * @return
      */
-    public JsSdkConfigEntity getJsSdkConfig(QiYeParamsEntity qiYeParamsEntity, String url) {
+    public JsSdkConfigEntity getJsSdkConfig(String url) {
 
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
         String ticket = JsApiTicketUtil.getJsApiTicket(qiYeParamsEntity);

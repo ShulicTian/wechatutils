@@ -1,11 +1,13 @@
 package wechat.qiye.common.ctrl;
 
+import com.google.gson.JsonObject;
 import wechat.qiye.addressbook.ctrl.DepartmentCtrl;
 import wechat.qiye.addressbook.ctrl.PersonnelCtrl;
 import wechat.qiye.addressbook.entity.DepartmentEntity;
 import wechat.qiye.addressbook.entity.PersonnelEntity;
 import wechat.qiye.addressbook.entity.PersonnelSingleEntity;
 import wechat.qiye.addressbook.entity.QrcodeEntity;
+import wechat.qiye.auth.ctrl.LoginAuthCtrl;
 import wechat.qiye.common.aes.SHA1;
 import wechat.qiye.common.entity.JsSdkConfigEntity;
 import wechat.qiye.common.entity.QiYeParamsEntity;
@@ -31,17 +33,14 @@ public class QiYeCtrl extends BaseCtrlAbs {
 
     private final MessageCtrl messageCtrl;
 
+    private final LoginAuthCtrl loginAuthCtrl;
+
     public QiYeCtrl(QiYeParamsEntity qiYeParamsEntity) {
         super(qiYeParamsEntity);
         departmentCtrl = new DepartmentCtrl(qiYeParamsEntity);
         personnelCtrl = new PersonnelCtrl(qiYeParamsEntity);
         messageCtrl = new MessageCtrl(qiYeParamsEntity);
-    }
-    public void changeOpenGlobalAddressBookSecret (boolean flag){
-        super.changeOpenGlobalAddressBookSecret(flag);
-        departmentCtrl.changeOpenGlobalAddressBookSecret(flag);
-        personnelCtrl.changeOpenGlobalAddressBookSecret(flag);
-        messageCtrl.changeOpenGlobalAddressBookSecret(flag);
+        loginAuthCtrl = new LoginAuthCtrl(qiYeParamsEntity);
     }
 
     /**
@@ -51,6 +50,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean createPersonnel(PersonnelEntity personnelEntity) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.create(personnelEntity);
     }
 
@@ -61,6 +61,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean updatePersonnel(PersonnelEntity personnelEntity) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.update(personnelEntity);
     }
 
@@ -72,6 +73,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public PersonnelEntity getPersonnel(String personnelId) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.get(personnelId);
     }
 
@@ -83,6 +85,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public List<PersonnelEntity> getPersonnelList(String departmentId) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.getDepartmentPersonnelList(departmentId);
     }
 
@@ -92,6 +95,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public List<PersonnelSingleEntity> getPersonnelIdList() {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.getPersonnelIdList();
     }
 
@@ -115,6 +119,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public List<PersonnelEntity> getPersonnelListByStatus(String departmentId, Integer status) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
 
@@ -127,6 +132,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public List<PersonnelEntity> getPersonnelListByNotStatus(String departmentId, Integer status) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId).stream().filter(personnel -> !status.equals(personnel.getStatus())).collect(Collectors.toList());
     }
 
@@ -138,6 +144,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public List<PersonnelEntity> getPersonnelDescList(String departmentId) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.getDepartmentPersonnelDescList(departmentId);
     }
 
@@ -148,6 +155,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean deletePersonnel(String personnelId) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.delete(personnelId);
     }
 
@@ -158,6 +166,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean batchDeletePersonnel(String[] personnelIds) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(true);
         return personnelCtrl.batchDelete(personnelIds);
     }
 
@@ -168,6 +177,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean createDepartment(DepartmentEntity departmentEntity) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.create(departmentEntity);
     }
 
@@ -178,6 +188,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean updateDepartment(DepartmentEntity departmentEntity) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.update(departmentEntity);
     }
 
@@ -189,6 +200,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public List<DepartmentEntity> getDepartmentList(String departmentId) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.getList(departmentId);
     }
 
@@ -199,6 +211,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public List<DepartmentEntity> getDepartmentIdList(String departmentId) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.getIdList(departmentId);
     }
 
@@ -210,6 +223,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      */
     @Deprecated
     public DepartmentEntity getDepartment(String departmentId) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.get(departmentId);
     }
 
@@ -220,6 +234,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public Boolean existsByDepartmentId(String departmentId) {
+        super.changeOpenGlobalAddressBookSecret(true);
         List<DepartmentEntity> list = getDepartmentIdList(departmentId);
         return list != null && list.size() > 0;
     }
@@ -231,6 +246,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean deleteDepartment(String departmentId) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         return departmentCtrl.delete(departmentId);
     }
 
@@ -305,6 +321,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean deletePersonnelByNotStatus(String departmentId, Integer status) {
+        departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         List<DepartmentEntity> departmentEntities = new ArrayList<>(departmentCtrl.getIdList(departmentId));
         departmentEntities.add(new DepartmentEntity(departmentId, null, null));
         logger.debug("【查询部门列表成功】");
@@ -346,6 +363,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean sendMessage(MessageEntity<? extends Message> messageEntity) {
+        messageCtrl.changeOpenGlobalAddressBookSecret(false);
         return messageCtrl.send(messageEntity);
     }
 
@@ -356,6 +374,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
+        messageCtrl.changeOpenGlobalAddressBookSecret(false);
         return messageCtrl.updateMessageStatus(taskCardMessageStatus);
     }
 
@@ -365,6 +384,8 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public JsSdkConfigEntity getJsSdkConfig(String url) {
+        
+        super.changeOpenGlobalAddressBookSecret(true);
 
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
         String ticket = JsApiTicketUtil.getJsApiTicket(qiYeParamsEntity);
@@ -387,6 +408,42 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public QrcodeEntity getQrCodeUrl(String sizeType) {
+        personnelCtrl.changeOpenGlobalAddressBookSecret(false);
         return personnelCtrl.getQrcode(sizeType);
+    }
+
+    /**
+     * 拼接OAuth2 Url
+     *
+     * @param redirectUrl
+     * @param state
+     * @return
+     */
+    public String getAuthUrl(String redirectUrl, String state, String scope) {
+        loginAuthCtrl.changeOpenGlobalAddressBookSecret(false);
+        return loginAuthCtrl.getAuthUrl(redirectUrl, state, scope);
+    }
+
+    /**
+     * 拼接qrcode OAuth Url
+     *
+     * @param redirectUrl
+     * @param state
+     * @return
+     */
+    public String getQrcodeAuthUrl(String redirectUrl, String state) {
+        loginAuthCtrl.changeOpenGlobalAddressBookSecret(false);
+        return loginAuthCtrl.getQrcodeAuthUrl(redirectUrl, state);
+    }
+
+    /**
+     * 根据code获取用户ID
+     *
+     * @param code
+     * @return
+     */
+    public JsonObject getQiYeUserInfoByCode(String code) {
+        loginAuthCtrl.changeOpenGlobalAddressBookSecret(false);
+        return loginAuthCtrl.getQiYeUserInfoByCode(code);
     }
 }

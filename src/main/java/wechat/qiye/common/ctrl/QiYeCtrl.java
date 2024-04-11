@@ -363,6 +363,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean sendMessage(MessageEntity<? extends Message> messageEntity) {
+        messageEntity.setAgentId(qiYeParamsEntity.getAgentId());
         messageCtrl.changeOpenGlobalAddressBookSecret(false);
         return messageCtrl.send(messageEntity);
     }
@@ -374,6 +375,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public boolean updateMessageStatus(TaskCardMessageStatus taskCardMessageStatus) {
+        taskCardMessageStatus.setAgentid(qiYeParamsEntity.getAgentId());
         messageCtrl.changeOpenGlobalAddressBookSecret(false);
         return messageCtrl.updateMessageStatus(taskCardMessageStatus);
     }

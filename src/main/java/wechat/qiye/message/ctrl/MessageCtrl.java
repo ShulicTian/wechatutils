@@ -36,6 +36,7 @@ public class MessageCtrl extends BaseCtrlAbs {
                 replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
         String params = messageEntityToJsonStringByAdapter(messageEntity);
         String result = HttpsRequestUtil.httpsPost(url, params.getBytes(StandardCharsets.UTF_8));
+        logger.info(result);
         SendReceiveEntity sendReceiveEntity = gson.fromJson(result, SendReceiveEntity.class);
         Integer errorCode = sendReceiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次

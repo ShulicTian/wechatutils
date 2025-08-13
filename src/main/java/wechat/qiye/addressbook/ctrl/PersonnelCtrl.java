@@ -75,6 +75,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      *
      * @param personnelId
      */
+    @Deprecated
     @Override
     public PersonnelEntity get(String personnelId) {
         String url = BaseUrlConstant.QIYE_RD_PERSONNEL.
@@ -153,6 +154,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      * @param departmentId
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getDepartmentPersonnelList(String departmentId) {
         String url = BaseUrlConstant.QIYE_DEPARTMENT_PERSONNEL.
                 replace("METHOD", QiYeUriEnum.SIMPLELIST.getUri()).
@@ -202,6 +204,7 @@ public class PersonnelCtrl extends BaseCtrlAbs implements BaseCtrl<PersonnelEnti
      * @param departmentId
      * @return
      */
+    @Deprecated
     public List<PersonnelEntity> getDepartmentPersonnelDescList(String departmentId) {
         String url = BaseUrlConstant.QIYE_DEPARTMENT_PERSONNEL.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).

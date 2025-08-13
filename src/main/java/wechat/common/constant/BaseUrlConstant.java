@@ -25,6 +25,7 @@ public class BaseUrlConstant {
     /**
      * 企业微信获取部门人员的URL（GET）
      */
+    @Deprecated
     public static String QIYE_DEPARTMENT_PERSONNEL = "https://qyapi.weixin.qq.com/cgi-bin/user/METHOD?access_token=ACCESS_TOKEN&department_id=DEPARTMENT_ID";
 
     /**

@@ -320,6 +320,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @param status
      * @return
      */
+    @Deprecated
     public boolean deletePersonnelByNotStatus(String departmentId, Integer status) {
         departmentCtrl.changeOpenGlobalAddressBookSecret(true);
         List<DepartmentEntity> departmentEntities = new ArrayList<>(departmentCtrl.getIdList(departmentId));

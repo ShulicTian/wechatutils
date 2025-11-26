@@ -387,7 +387,7 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @return
      */
     public JsSdkConfigEntity getJsSdkConfig(String url) {
-        
+
         super.changeOpenGlobalAddressBookSecret(true);
 
         JsSdkConfigEntity jsSdkConfigEntity = new JsSdkConfigEntity();
@@ -422,9 +422,9 @@ public class QiYeCtrl extends BaseCtrlAbs {
      * @param state
      * @return
      */
-    public String getAuthUrl(String redirectUrl, String state, String scope) {
+    public String getAuthUrl(String redirectUrl, String agentId, String state, String scope) {
         loginAuthCtrl.changeOpenGlobalAddressBookSecret(false);
-        return loginAuthCtrl.getAuthUrl(redirectUrl, state, scope);
+        return loginAuthCtrl.getAuthUrl(redirectUrl, agentId, state, scope);
     }
 
     /**

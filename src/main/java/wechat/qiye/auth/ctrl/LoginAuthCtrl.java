@@ -26,9 +26,10 @@ public class LoginAuthCtrl extends BaseCtrlAbs {
      * @param state
      * @return
      */
-    public String getAuthUrl(String redirectUrl, String state, String scope) {
+    public String getAuthUrl(String redirectUrl, String agentId, String state, String scope) {
         return BaseUrlConstant.WX_OAUTH2.replace("APPID", qiYeParamsEntity.getCorpId()).
                 replace("REDIRECT_URI", redirectUrl).
+                replace("AGENTID", agentId).
                 replace("STATE", state).
                 replace("SCOPE", scope);
     }

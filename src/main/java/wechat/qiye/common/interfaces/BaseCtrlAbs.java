@@ -25,7 +25,7 @@ public abstract class BaseCtrlAbs {
         this.qiYeParamsEntity = qiYeParamsEntity;
     }
 
-    public void changeOpenGlobalAddressBookSecret (boolean flag){
+    public void changeOpenGlobalAddressBookSecret(boolean flag) {
         qiYeParamsEntity.setOpenGlobalAddressBookSecret(flag);
     }
 
@@ -53,10 +53,20 @@ public abstract class BaseCtrlAbs {
      * @return
      */
     public boolean isTokenLose(Integer code) {
+        return isTokenLose(code, false);
+    }
+
+    /**
+     * AccessToken是否失效
+     *
+     * @param code
+     * @return
+     */
+    public boolean isTokenLose(Integer code, boolean isOpenAddressBook) {
         // 只会重新请求一次，若还是不合法则不重复请求
         if (!isReGetToken && QiYeErrorEnum.ACCESSTOKEN_ILLEGAL.getCode().equals(code)) {
             isReGetToken = true;
-            AccessTokenUtil.requestAccessToken(qiYeParamsEntity);
+            AccessTokenUtil.requestAccessToken(qiYeParamsEntity, isOpenAddressBook);
             logger.info("【QiYeWeChat】{}", "重新请求AccessToken");
             return true;
         }

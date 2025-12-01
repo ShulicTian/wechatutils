@@ -24,13 +24,23 @@ public class AccessTokenUtil extends RedisSwitch {
      * @return
      */
     public static String getAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+        return getAccessToken(qiYeParamsEntity, false);
+    }
+
+    /**
+     * 获取企业微信AccessToken
+     *
+     * @param qiYeParamsEntity
+     * @return
+     */
+    public static String getAccessToken(QiYeParamsEntity qiYeParamsEntity, boolean isOpenAddressBook) {
         if (qiYeParamsEntity.isOpenRedisCache()) {
             initJedisPool(qiYeParamsEntity.getRedisConfig());
         }
-        if (qiYeParamsEntity.isOpenGlobalAddressBookSecret()) {
+        if (isOpenAddressBook) {
             return getAddressBookAccessToken(qiYeParamsEntity);
         }
-        return getCorpAccessToken(qiYeParamsEntity);
+        return getCorpAccessToken(qiYeParamsEntity, false);
     }
 
     /**
@@ -39,17 +49,17 @@ public class AccessTokenUtil extends RedisSwitch {
      * @param qiYeParamsEntity
      * @return
      */
-    public static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+    public static String getCorpAccessToken(QiYeParamsEntity qiYeParamsEntity, boolean isOpenAddressBook) {
         String accessToken = "";
         try {
-            accessToken = getCacheAccessToken(qiYeParamsEntity);
+            accessToken = getCacheAccessToken(qiYeParamsEntity, isOpenAddressBook);
         } catch (Exception e) {
             logger.error("【QiYeWeChat】{} {}", "缓存获取异常", e);
             e.printStackTrace();
         }
         //如果缓存没拿到就重新请求
         if (accessToken == null || "".equals(accessToken)) {
-            accessToken = requestAccessToken(qiYeParamsEntity);
+            accessToken = requestAccessToken(qiYeParamsEntity, isOpenAddressBook);
         }
         logger.info("【QiYeWeChat】{} [{}]", "获取企业微信AccessToken", accessToken);
         return accessToken;
@@ -63,7 +73,7 @@ public class AccessTokenUtil extends RedisSwitch {
      */
     private static String getAddressBookAccessToken(QiYeParamsEntity qiYeParamsEntity) {
         qiYeParamsEntity.setSecret(qiYeParamsEntity.getAddressBookSecret());
-        return getCorpAccessToken(qiYeParamsEntity);
+        return getCorpAccessToken(qiYeParamsEntity, true);
     }
 
     /**
@@ -72,13 +82,13 @@ public class AccessTokenUtil extends RedisSwitch {
      * @param qiYeParamsEntity
      * @return
      */
-    public static String requestAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+    public static String requestAccessToken(QiYeParamsEntity qiYeParamsEntity, boolean isOpenAddressBook) {
         String url = BaseUrlConstant.QIYE_ACCESS_TOKEN_URL.replace("ID", qiYeParamsEntity.getCorpId()).replace("SECRET", qiYeParamsEntity.getSecret());
         String result = HttpsRequestUtil.httpsGet(url);
         AccessTokenEntity accessTokenEntity = new Gson().fromJson(result, AccessTokenEntity.class);
         if (AesException.OK == accessTokenEntity.getErrcode()) {
             logger.debug("【QiYeWeChat】{} [{}] ", "重新请求AccessToken", accessTokenEntity.getAccessToken());
-            cacheAccessToken(qiYeParamsEntity.getAgentId(), accessTokenEntity, qiYeParamsEntity.isOpenGlobalAddressBookSecret());
+            cacheAccessToken(qiYeParamsEntity.getAgentId(), accessTokenEntity, isOpenAddressBook);
             return accessTokenEntity.getAccessToken();
         }
         logger.error("【QiYeWeChat】{} [{}] {}", "请求AccessToken失败", accessTokenEntity.getErrcode(), accessTokenEntity.getErrmsg());
@@ -109,10 +119,10 @@ public class AccessTokenUtil extends RedisSwitch {
      *
      * @return
      */
-    private static String getCacheAccessToken(QiYeParamsEntity qiYeParamsEntity) {
+    private static String getCacheAccessToken(QiYeParamsEntity qiYeParamsEntity, boolean isOpenAddressBook) {
         String accessToken = "";
         if (openRedisCache) {
-            if (qiYeParamsEntity.isOpenGlobalAddressBookSecret()) {
+            if (isOpenAddressBook) {
                 accessToken = RedisUtil.getString(CacheUtil.ADDRESS_BOOK_ACCESS_TOKEN_CACHE, jedisPool);
             } else {
                 accessToken = RedisUtil.getString(CacheUtil.ACCESS_TOKEN_CACHE + "_" + qiYeParamsEntity.getAgentId(), jedisPool);

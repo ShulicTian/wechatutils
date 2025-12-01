@@ -44,7 +44,7 @@ public class JsApiTicketUtil extends RedisSwitch {
      * @return
      */
     public static String requestJsApiTicket(QiYeParamsEntity qiYeParamsEntity) {
-        String url = BaseUrlConstant.QIYE_JSAPI_TICKET.replace("ACCESS_TOKEN", AccessTokenUtil.getCorpAccessToken(qiYeParamsEntity));
+        String url = BaseUrlConstant.QIYE_JSAPI_TICKET.replace("ACCESS_TOKEN", AccessTokenUtil.getCorpAccessToken(qiYeParamsEntity, true));
         String result = HttpsRequestUtil.httpsGet(url);
         JsApiTicketEntity jsApiTicketEntity = new Gson().fromJson(result, JsApiTicketEntity.class);
         if (AesException.OK == jsApiTicketEntity.getErrcode()) {

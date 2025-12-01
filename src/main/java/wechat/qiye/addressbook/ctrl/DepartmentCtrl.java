@@ -34,12 +34,12 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean create(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.CREATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true));
         String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes(StandardCharsets.UTF_8));
         ReceiveEntity receiveEntity = gson.fromJson(result, ReceiveEntity.class);
         Integer errorCode = receiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return create(departmentEntity);
         }
         return isSuccess(errorCode, "创建部门");
@@ -51,12 +51,12 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      * @param departmentEntity
      */
     public boolean update(DepartmentEntity departmentEntity) {
-        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity));
+        String url = BaseUrlConstant.QIYE_CU_DEPARTMENT.replace("METHOD", QiYeUriEnum.UPDATE.getUri()).replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true));
         String result = HttpsRequestUtil.httpsPost(url, gson.toJson(departmentEntity).getBytes(StandardCharsets.UTF_8));
         ReceiveEntity receiveEntity = gson.fromJson(result, ReceiveEntity.class);
         Integer errorCode = receiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return update(departmentEntity);
         }
         return isSuccess(errorCode, "更新部门");
@@ -70,13 +70,13 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public boolean delete(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.DELETE.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true)).
                 replace("ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         ReceiveEntity receiveEntity = gson.fromJson(result, DepartmentEntity.class);
         Integer errorCode = receiveEntity.getErrcode();
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return delete(departmentId);
         }
         return isSuccess(errorCode, "删除部门");
@@ -90,7 +90,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public DepartmentEntity get(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.GET.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true)).
                 replace("#ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
@@ -98,7 +98,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
         DepartmentEntity department = gson.fromJson(departments, DepartmentEntity.class);
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return get(departmentId);
         }
         if (isSuccess(errorCode, "获取部门列表")) {
@@ -116,7 +116,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public List<DepartmentEntity> getList(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.LIST.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true)).
                 replace("#ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
@@ -124,7 +124,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
         List<DepartmentEntity> list = Arrays.asList(gson.fromJson(departments, DepartmentEntity[].class));
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return getList(departmentId);
         }
         if (isSuccess(errorCode, "获取部门列表")) {
@@ -141,7 +141,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
     public List<DepartmentEntity> getIdList(String departmentId) {
         String url = BaseUrlConstant.QIYE_RD_DEPARTMENT.
                 replace("METHOD", QiYeUriEnum.SIMPLELIST.getUri()).
-                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity)).
+                replace("ACCESS_TOKEN", AccessTokenUtil.getAccessToken(qiYeParamsEntity, true)).
                 replace("#ID", departmentId);
         String result = HttpsRequestUtil.httpsGet(url);
         JsonObject jsonObject = GsonUtil.parseJsonObject(result);
@@ -149,7 +149,7 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
         List<DepartmentEntity> list = Arrays.asList(gson.fromJson(departments, DepartmentEntity[].class));
         Integer errorCode = Integer.parseInt(jsonObject.get("errcode") + "");
         // 第一次请求如果token失效会重新获取token再请求一次
-        if (isTokenLose(errorCode)) {
+        if (isTokenLose(errorCode, true)) {
             return getIdList(departmentId);
         }
         if (isSuccess(errorCode, "获取部门ID列表")) {
@@ -166,6 +166,6 @@ public class DepartmentCtrl extends BaseCtrlAbs implements BaseCtrl<DepartmentEn
      */
     public Boolean existsByDepartmentId(String departmentId) {
         List<DepartmentEntity> list = getIdList(departmentId);
-        return list != null && list.size() > 0;
+        return list != null && !list.isEmpty();
     }
 }

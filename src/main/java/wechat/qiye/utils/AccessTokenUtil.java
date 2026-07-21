@@ -55,10 +55,9 @@ public class AccessTokenUtil extends RedisSwitch {
             accessToken = getCacheAccessToken(qiYeParamsEntity, isOpenAddressBook);
         } catch (Exception e) {
             logger.error("【QiYeWeChat】{} {}", "缓存获取异常", e);
-            e.printStackTrace();
         }
         //如果缓存没拿到就重新请求
-        if (accessToken == null || "".equals(accessToken)) {
+        if (accessToken == null || accessToken.isEmpty()) {
             accessToken = requestAccessToken(qiYeParamsEntity, isOpenAddressBook);
         }
         logger.info("【QiYeWeChat】{} [{}]", "获取企业微信AccessToken", accessToken);

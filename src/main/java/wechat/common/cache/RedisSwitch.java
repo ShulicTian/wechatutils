@@ -18,7 +18,7 @@ public abstract class RedisSwitch {
 
     protected static void initJedisPool(RedisConfig redisConfig) {
         try {
-            if (jedisPool == null) {
+            if (jedisPool == null || jedisPool.isClosed()) {
                 jedisPool = JedisUtil.getJedisPool(redisConfig);
             }
             openRedisCache = true;

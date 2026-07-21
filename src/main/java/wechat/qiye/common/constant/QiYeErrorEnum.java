@@ -8,7 +8,8 @@ package wechat.qiye.common.constant;
 
 public enum QiYeErrorEnum {
     OK(0, "成功"),
-    ACCESSTOKEN_ILLEGAL(40014, "不合法的access_token");
+    ACCESSTOKEN_ILLEGAL(40014, "不合法的access_token"),
+    URL_NOT_AUTH(50001, "不合法的access_token");
 
     private final Integer code;
     private final String text;
